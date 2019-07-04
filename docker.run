@@ -1,1 +1,1 @@
-docker run -it -p 49160:8080 --rm osocspain/social-service:latest
+docker run -it -p 49160:3000 --rm osocspain/social-service:latest
