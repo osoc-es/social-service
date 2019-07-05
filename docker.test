@@ -1,2 +1,2 @@
-docker run -d --restart always --name social-service -v ${PWD}:/user/src/app  -p 8080:3000 node:10 node /user/src/app/server.js
+docker run -d --restart always --name social-service -v ${PWD}:/user/src/app  -p 5043:3000 node:10 node /user/src/app/server.js
 
