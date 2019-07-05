@@ -1,0 +1,7 @@
+[
+  {
+    "id": "update",
+    "execute-command": "/home/cbadenes/docker/osoc/social-service/hook-git.sh",
+    "command-working-directory": ""
+  }
+]
