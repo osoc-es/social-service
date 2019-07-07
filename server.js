@@ -16,7 +16,6 @@ app.use(function(req, res, next) {
   });
 
 var Users = require('./routes/Users')
-
 app.use('/users', Users)
 
 const PORT = process.env.PORT || 3000
