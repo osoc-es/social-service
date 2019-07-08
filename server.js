@@ -2,6 +2,28 @@ var express = require("express");
 var cors = require('cors')
 var bodyParser = require('body-parser')
 var app = express();
+var router = express.Router();
+
+var Users = require('./routes/Users')
+
+// simple logger for this router's requests
+// all requests to this router will first hit this middleware
+router.use(function(req, res, next) {
+  console.log('%s url:%s  path:%s', req.method, req.url, req.path);
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
+// this will only be invoked if the path ends in /users
+router.use('/users', Users)
+
+// always invoked
+//router.use(function(req, res, next) {
+//  res.send('Hello World');
+//});
+
+
 app.use(bodyParser.json())
 app.use(cors())
 app.use(
@@ -9,14 +31,8 @@ app.use(
     extended: false
   })
 )
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-  });
 
-var Users = require('./routes/Users')
-app.use('/social-service/users', Users)
+app.use('/social-service', router);
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT,function(){
