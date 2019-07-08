@@ -1,2 +1,3 @@
+docker stop social-service
+docker rm -f social-service
 docker run -d --restart always --name social-service -v ${PWD}:/user/src/app  -p 5043:3000 node:10 node /user/src/app/server.js
-
