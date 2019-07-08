@@ -119,5 +119,7 @@ users.put("/delete",function(req,res){
   res.send("error: "+err)
 })
 });
-//function validateRegister(){}
+function validateRegister(req){
+  
+}
 module.exports = users

@@ -16,7 +16,7 @@ app.use(function(req, res, next) {
   });
 
 var Users = require('./routes/Users')
-app.use('/users', Users)
+app.use('/social-service/users', Users)
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT,function(){
