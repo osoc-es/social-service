@@ -14,7 +14,7 @@ conflicts.post('/add', (req, res) => {
           }).then(conlict => {
             if (!conlict) {
                 Conflict.create({title:req.body.title})
-                res.status(201).send("Conflict Created..!!")
+                res.status(200).send("Conflict Created..!!")
             }else{
                res.status(409).send("Conflict already exists..!!")
             }

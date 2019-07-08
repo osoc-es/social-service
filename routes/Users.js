@@ -52,7 +52,7 @@ User.findOne({
         };
     User.create(userData)
       .then(function(result){
-        res.status(201).send("User added successfully")
+        res.status(200).send("User added successfully")
       })
     });
   } else {
