@@ -29,7 +29,7 @@ module.exports = db.sequelize.define(
     }
     ,
     Gender: {
-      type: Sequelize.TINYINT,
+      type: Sequelize.STRING,
     }
     ,
     DOB: {

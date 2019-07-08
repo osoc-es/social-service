@@ -6,6 +6,8 @@ const UserType = require('../models/UserType')
 users.use(cors())
 //creating new user
 users.post('/register', (req, res) => {
+var validateData=validateRegister(req);
+if(validateData=="True"){
 var type="end_user";
 User.findOne({
   where: {
@@ -23,7 +25,7 @@ User.findOne({
         LastName: req.body.LastName,
         ContactNumber: req.body.ContactNumber,
         Address: req.body.Address,
-        Gender:(req.body.Gender=="Male") ? 1 : 0,
+        Gender:req.body.Gender,
         DOB: req.body.DOB
         };
     User.create(userData)
@@ -38,6 +40,10 @@ User.findOne({
 .catch(err => {
   res.send('error: ' + err)
 })
+}
+else{
+  res.status(400).send(validateData);
+}
 })
 //login
 users.post('/login', (req, res) => {
@@ -120,6 +126,25 @@ users.put("/delete",function(req,res){
 })
 });
 function validateRegister(req){
+  if(req.body.Email==""||req.body.Email==null){
+    return "Email Can not be Empty.!"
+  }
+  else if(req.body.Password==""||req.body.Password==null){
+    return "Password Can not be Empty.!"
+  }
+  else if(req.body.FirstName==""||req.body.FirstName==null){
+    return "FirstName Can not be Empty.!"
+  }
+  else if(req.body.LastName==""||req.body.LastName==null){
+    return "LastName Can not be Empty.!"
+  }
+  else if(req.body.DOB==""||req.body.DOB==null){
+    return "Date of Birth Can not be Empty.!"
+  }
+  else{
+    return "True";
+  }
+
   
 }
 module.exports = users
