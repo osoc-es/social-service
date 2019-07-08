@@ -6,7 +6,8 @@ forms.use(cors())
 
 //creating new form
 forms.post('/add', (req, res) => {
-    if(req.body.description!=null && req.body.description!=""){
+    if(req.body.description!=null && req.body.description!="" 
+                           &&req.body.ConflictId!=null&&req.body.ConflictId!=""){
                 var data={
                     ConflictId:req.body.ConflictId,
                     description:req.body.description
@@ -21,20 +22,20 @@ forms.post('/add', (req, res) => {
                      }
                  })
     }else{
-        res.status(400).send("Description can not be empty.");
+        res.status(400).send("Description and ConflictId can not be empty.");
     }
 
 });
-/*
-//get conflicts
-conflicts.get('/', (req, res) => {
-    Conflict.findAll({
+
+//get forms
+forms.get('/', (req, res) => {
+    Form.findAll({
     })
-      .then(conflict => {
-        if (conflict) {
+      .then(form => {
+        if (form) {
           res.status(200).json(conflict)
         } else {
-          res.status(404).send('No conflict found,you can add them on /add..')
+          res.status(404).send('No Form found,you can add them on /add..')
         }
       })
       .catch(err => {
@@ -42,13 +43,13 @@ conflicts.get('/', (req, res) => {
       })
   })
 //update conflict
-conflicts.put("/update",function(req,res){
-  Conflict.update(
-    {title:req.body.title},
-    {returning:true,where:{ConflictID:req.body.ConflictID}}
+forms.put("/update",function(req,res){
+  Form.update(
+    {description:req.body.description},
+    {returning:true,where:{FormId:req.body.FormId}}
   ).then(result => {
     if(result==null){
-     res.status(404).send("Conflict not foound.")
+     res.status(404).send("Form not foound.")
     }
     else{
      res.status(200).send(result)
@@ -60,12 +61,12 @@ conflicts.put("/update",function(req,res){
 })
 });
 //deleting conflict
-conflicts.put("/delete",function(req,res){
-  Conflict.destroy(
- {where:{ConflictId:req.body.ConflictId}}
+forms.put("/delete",function(req,res){
+  Form.destroy(
+ {where:{FormId:req.body.FormId}}
 ).then(result => {
  if(result==null){
-  res.status(404).send("Conflict not found.")
+  res.status(404).send("Form not found.")
  }
  else{
   res.status(200).send(result)
@@ -75,5 +76,5 @@ conflicts.put("/delete",function(req,res){
 .catch(err=>{
 res.status(400).send("error: "+err)
 })
-});*/
+});
 module.exports = forms
