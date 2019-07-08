@@ -18,7 +18,7 @@ router.use(function(req, res, next) {
 
 // this will only be invoked if the path ends in /users
 router.use('/users', Users)
-router.use("/conflitcs",Conflicts)
+router.use("/conflicts",Conflicts)
 // always invoked
 //router.use(function(req, res, next) {
 //  res.send('Hello World');
