@@ -10,7 +10,7 @@ module.exports = db.sequelize.define(
       autoIncrement:true
     },
     ConflictId: {
-        type: Sequelize.INTEGER
+      type: Sequelize.INTEGER
     },
     description: {
       type: Sequelize.STRING

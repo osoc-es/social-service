@@ -2,12 +2,16 @@ const express = require('express')
 const forms = express.Router()
 const cors = require('cors')
 const Form = require('../models/Form')
-conflicts.use(cors())
+forms.use(cors())
 
 //creating new form
 forms.post('/add', (req, res) => {
     if(req.body.description!=null && req.body.description!=""){
-                Form.create({ConflictId:req.body.ConflictId,description:req.body.description})
+                var data={
+                    ConflictId:req.body.ConflictId,
+                    description:req.body.description
+                }
+                Form.create(data)
                  .then(function(result){
                      if(result){
                         res.status(200).send("Form Created..!!")
@@ -16,11 +20,8 @@ forms.post('/add', (req, res) => {
                          res.status(409).send("something went wrong");
                      }
                  })
-                 . catch(err => {
-                  res.status(400).send('error: ' + err)
-                     })
     }else{
-        res.status(400).send("Title can not be empty.");
+        res.status(400).send("Description can not be empty.");
     }
 
 });
