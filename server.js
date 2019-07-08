@@ -6,7 +6,7 @@ var router = express.Router();
 
 var Users = require('./routes/Users')
 var Conflicts = require('./routes/Conflict')
-
+var Forms = require('./routes/Forms')
 // simple logger for this router's requests
 // all requests to this router will first hit this middleware
 router.use(function(req, res, next) {
@@ -19,6 +19,7 @@ router.use(function(req, res, next) {
 // this will only be invoked if the path ends in /users
 router.use('/users', Users)
 router.use("/conflicts",Conflicts)
+router.use("/Forms",Forms)
 // always invoked
 //router.use(function(req, res, next) {
 //  res.send('Hello World');

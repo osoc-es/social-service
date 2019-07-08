@@ -82,7 +82,7 @@ if(req.body.Email!=null || req.body.Password!=null){
   })
     .then(user => {
       if (user) {
-        res.status(200).send(user.dataValues.FirstName+" "+user.dataValues.LastName);
+        res.status(200).json(user.dataValues.FirstName+""+user.dataValues.LastName);
         //res.json(user.dataValues);
       } else {
         res.status(404).send('User does not exist')
