@@ -1,0 +1,1 @@
+docker run -it --rm --name social-service -v ${PWD}:/user/src/app  -p 5043:3000 node:10 node /user/src/app/server.js
