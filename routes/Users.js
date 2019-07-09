@@ -82,7 +82,7 @@ if(req.body.Email!=null || req.body.Password!=null){
   })
     .then(user => {
       if (user) {
-        res.status(200).json(user.dataValues.FirstName+""+user.dataValues.LastName);
+        res.status(200).json(user.FirstName+""+user.LastName);
         //res.json(user.dataValues);
       } else {
         res.status(404).send('User does not exist')
@@ -98,17 +98,29 @@ else{
 })
 
 //get profile
-users.get('/profile', (req, res) => {
+users.get('/profile/:Email/', (req, res) => {
   User.findOne({
     where: {
-      Email:req.body.Email
+      Email:req.params.Email
     }
+    //,attributes: { exclude: ['Password'] }
   })
     .then(user => {
       if (user) {
-        res.status(200).send(user)
+        UserType.findOne({
+          id:user.id
+        })
+        .then(function(result){
+          res.status(200).send(
+            {
+              Email:user.Email,UserType:result.title,FirstName:user.FirstName,LastName:user.LastName,
+              Address:user.Address,Gender:user.Gender,DOB:user.DOB
+            }
+            )
+        })
+
       } else {
-        res.status(404).send('User does not exist')
+        res.status(404).send('User does not exist');
       }
     })
     .catch(err => {

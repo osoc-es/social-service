@@ -5,11 +5,11 @@ const Form = require('../models/Form')
 forms.use(cors())
 
 //creating new form
-forms.post('/add', (req, res) => {
+forms.post('/add/:ConflictId/', (req, res) => {
     if(req.body.description!=null && req.body.description!="" 
                            &&req.body.ConflictId!=null&&req.body.ConflictId!=""){
                 var data={
-                    ConflictId:req.body.ConflictId,
+                    ConflictId:req.params.ConflictId,
                     description:req.body.description
                 }
                 Form.create(data)
