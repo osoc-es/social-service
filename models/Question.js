@@ -5,7 +5,7 @@ module.exports = db.sequelize.define(
   'Question',
   {
     QuestionId: {
-      type: Sequelize.Instance,
+      type: Sequelize.INTEGER,
       primaryKey: true,
       autoIncrement:true
     },

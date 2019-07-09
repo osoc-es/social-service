@@ -3,26 +3,9 @@ const users = express.Router()
 const cors = require('cors')
 const User = require('../models/User')
 const UserType = require('../models/UserType')
-var Validator = require('jsonschema').Validator;
-/*var registerValidator = new Validator();
-var registerSchema = {
-  "id": "SignUp",
-  "type": "object",
-  "properties": {
-    "Email": {"type": "string"},
-    "Password": {"type": "string"},
-    "FirstName": {"type": "string"},
-    "LastName": {"type": "string"},
-    "ContactNumber":{"type":"string", optional: true },
-    "Address":{"type":"string", optional: true },
-    "Gender":{"type":"string", optional: true },
-    "DOB":{"type":"date", optional: true }
-    
-  },
-  "required": ["Email","Password","FirstName","LastName"]
-};
-*/
 users.use(cors())
+
+
 //creating new user
 users.post('/register', (req, res) => {
 //var schemaResult=registerValidator.validate(req.body, registerSchema);
@@ -38,7 +21,6 @@ User.findOne({
   if (!user) {
     UserType.create({title:type})
     .then(function(result) {
-
       const userData = {
         Email: req.body.Email,
         id: result.id,
@@ -52,19 +34,19 @@ User.findOne({
         };
     User.create(userData)
       .then(function(result){
-        res.status(200).send("User added successfully")
+        res.status(200).json("User added successfully")
       })
     });
   } else {
-    res.status(409).send("User already exists");
+    res.status(409).json("User already exists");
   }
 })
 .catch(err => {
-  res.status(400).send('error: ' + err)
+  res.status(400).json('error: ' + err)
 })
 }
 else{
-  res.status(400).send(validateData);
+  res.status(400).json(validateData);
 }
 } 
 catch (error ) {
@@ -83,17 +65,16 @@ if(req.body.Email!=null || req.body.Password!=null){
     .then(user => {
       if (user) {
         res.status(200).json(user.FirstName+""+user.LastName);
-        //res.json(user.dataValues);
       } else {
-        res.status(404).send('User does not exist')
+        res.status(404).json("Email|Passowrd does not match.")
       }
     })
     .catch(err => {
-      res.status(400).send('error: ' + err)
+      res.status(400).json('error: ' + err)
     })
 }
 else{
-  res.status(400).send("Invalid Data:"+ result.response.errorMessage);
+  res.status(400).json("Please Email and Passord both..");
 }
 })
 
@@ -111,7 +92,7 @@ users.get('/profile/:Email/', (req, res) => {
           id:user.id
         })
         .then(function(result){
-          res.status(200).send(
+          res.status(200).json(
             {
               Email:user.Email,UserType:result.title,FirstName:user.FirstName,LastName:user.LastName,
               Address:user.Address,Gender:user.Gender,DOB:user.DOB
@@ -120,47 +101,47 @@ users.get('/profile/:Email/', (req, res) => {
         })
 
       } else {
-        res.status(404).send('User does not exist');
+        res.status(404).json('User does not exist');
       }
     })
     .catch(err => {
-      res.status(400).send('error: ' + err)
+      res.status(400).json('error: ' + err)
     })
 })
 
 //update profile
-users.put("/profile",function(req,res){
+users.put("/profile/:Email",function(req,res){
      User.update(
        {FirstName:req.body.FirstName,LastName:req.body.LastName},
-       {returning:true,where:{Email:req.body.Email}}
+       {returning:true,where:{Email:req.params.Email}}
      ).then(result => {
        if(result==null){
-        res.status(404).send("User not foound.")
+        res.status(404).json("User not found.")
        }
        else{
-        res.status(200).send(result)
+        res.status(200).json("Profile updated.")
        }
      
     })
    .catch(err=>{
-     res.status(400).send("error: "+err)
+     res.status(400).json("error: "+err)
    })
 });
 //removing user
-users.put("/delete",function(req,res){
+users.put("/delete/:Email",function(req,res){
   User.destroy(
-    {where:{Email:req.body.Email}}
+    {where:{Email:req.params.Email}}
   ).then(result => {
     if(result==null){
-     res.status(404).send("User not found.")
+     res.status(404).json("User not found.")
     }
     else{
-     res.status(200).send(result)
+     res.status(200).json("User removed.")
     }
   
  })
 .catch(err=>{
-  res.status(400).send("error: "+err)
+  res.status(400).json("error: "+err)
 })
 });
 function validateRegister(req){
@@ -179,7 +160,24 @@ function validateRegister(req){
   else{
     return "True";
   }
-
-  
 }
+/*var Validator = require('jsonschema').Validator;
+var registerValidator = new Validator();
+var registerSchema = {
+  "id": "SignUp",
+  "type": "object",
+  "properties": {
+    "Email": {"type": "string"},
+    "Password": {"type": "string"},
+    "FirstName": {"type": "string"},
+    "LastName": {"type": "string"},
+    "ContactNumber":{"type":"string", optional: true },
+    "Address":{"type":"string", optional: true },
+    "Gender":{"type":"string", optional: true },
+    "DOB":{"type":"date", optional: true }
+    
+  },
+  "required": ["Email","Password","FirstName","LastName"]
+};
+*/
 module.exports = users

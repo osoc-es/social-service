@@ -14,16 +14,16 @@ conflicts.post('/add', (req, res) => {
           }).then(conlict => {
             if (!conlict) {
                 Conflict.create({title:req.body.title})
-                res.status(200).send("Conflict Created..!!")
+                res.status(200).json("Conflict Created..!!")
             }else{
-               res.status(409).send("Conflict already exists..!!")
+               res.status(409).json("Conflict already exists..!!")
             }
         }). catch(err => {
-            res.status(400).send('error: ' + err)
+            res.status(400).json('error: ' + err)
           })
 
     }else{
-        res.status(400).send("Title can not be empty.");
+        res.status(400).json("Title can not be empty.");
     }
 
 });
@@ -35,46 +35,46 @@ conflicts.get('/', (req, res) => {
         if (conflict) {
           res.status(200).json(conflict)
         } else {
-          res.status(404).send('No conflict found,you can add them on /add..')
+          res.status(404).json('No conflict found,you can add them on conflicts/add..')
         }
       })
       .catch(err => {
-        res.status(400).send('error: ' + err)
+        res.status(400).json('error: ' + err)
       })
   })
 //update conflict
-conflicts.put("/update",function(req,res){
+conflicts.put("/update/:ConflictId/",function(req,res){
   Conflict.update(
     {title:req.body.title},
-    {returning:true,where:{ConflictID:req.body.ConflictID}}
+    {returning:true,where:{ConflictId:req.params.ConflictId}}
   ).then(result => {
     if(result==null){
-     res.status(404).send("Conflict not foound.")
+     res.status(404).json("Conflict not found.")
     }
     else{
-     res.status(200).send(result)
+     res.status(200).json(result)
     }
   
  })
 .catch(err=>{
-  res.status(400).send("error: "+err)
+  res.status(400).json("error: "+err)
 })
 });
 //deleting conflict
-conflicts.put("/delete",function(req,res){
+conflicts.put("/delete/:ConflictId/",function(req,res){
   Conflict.destroy(
- {where:{ConflictId:req.body.ConflictId}}
+ {where:{ConflictId:req.params.ConflictId}}
 ).then(result => {
  if(result==null){
-  res.status(404).send("Conflict not found.")
+  res.status(404).json("Conflict not found.")
  }
  else{
-  res.status(200).send(result)
+  res.status(200).json("Conflic deleted.")
  }
 
 })
 .catch(err=>{
-res.status(400).send("error: "+err)
+res.status(400).json("error: "+err)
 })
 });
 module.exports = conflicts
