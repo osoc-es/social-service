@@ -2,15 +2,17 @@ const Sequelize = require('sequelize')
 const db = require('../database/db.js')
 
 module.exports = db.sequelize.define(
-  'UserAnswer',
+  'FeedBack',
   {
-    Email: {
+    FeedbackId: {
+      type: Sequelize.INTEGER,
+      primaryKey: true,
+      autoIncrement:true
+    },
+    feedback: {
       type: Sequelize.STRING
     },
-    QuestionId: {
-      type: Sequelize.INTEGER
-    },
-    AnswerId: {
+    sequenceNumber: {
       type: Sequelize.INTEGER
     } 
   },
