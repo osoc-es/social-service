@@ -30,7 +30,7 @@ forms.post('/add/:ConflictId/', (req, res) => {
 
 //get all forms
 forms.get('/:ConflictId/', (req, res) => {
-  Form.findAll({ where: {ConflictId: req.params.ConflictId }, include: [Conflict]})
+  Form.findAll({ where: {ConflictId: req.params.ConflictId }})
       .then(form => {
         if (form) {
           res.status(200).json(form)
