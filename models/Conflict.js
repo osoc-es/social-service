@@ -11,7 +11,10 @@ module.exports = db.sequelize.define(
     },
     title: {
       type: Sequelize.STRING
-    }
+    },
+    description: {
+      type: Sequelize.STRING
+    } 
   },
   {
     timestamps: false

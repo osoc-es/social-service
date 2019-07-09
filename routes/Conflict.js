@@ -13,7 +13,12 @@ conflicts.post('/add', (req, res) => {
             }
           }).then(conlict => {
             if (!conlict) {
-                Conflict.create({title:req.body.title})
+                Conflict.create(
+                  {
+                  title:req.body.title,
+                  description: req.body.description
+                  }
+                )
                 res.status(200).json("Conflict Created..!!")
             }else{
                res.status(409).json("Conflict already exists..!!")
@@ -45,7 +50,9 @@ conflicts.get('/', (req, res) => {
 //update conflict
 conflicts.put("/update/:ConflictId/",function(req,res){
   Conflict.update(
-    {title:req.body.title},
+    { title:req.body.title,
+      description: req.body.description
+    },
     {returning:true,where:{ConflictId:req.params.ConflictId}}
   ).then(result => {
     if(result==null){
