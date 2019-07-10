@@ -5,13 +5,16 @@ module.exports = db.sequelize.define(
   'UserAnswer',
   {
     Email: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
+      primaryKey: true
     },
     QuestionId: {
-      type: Sequelize.INTEGER
+      type: Sequelize.INTEGER,
+      primaryKey: true
     },
     AnswerId: {
-      type: Sequelize.INTEGER
+      type: Sequelize.INTEGER,
+      primaryKey: true
     } 
   },
   {

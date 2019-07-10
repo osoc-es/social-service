@@ -5,7 +5,6 @@ const FeedBack = require('../models/FeedBack')
 const ProblemFeedback = require('../models/ProblemFeedback')
 feedbacks.use(cors())
 
-
 feedbacks.post('/:Email/:ConflictId/', (req, res) => {
     if(req.body.feedback!="" & req.body.feedback!=null ){
         var data={
@@ -20,7 +19,7 @@ feedbacks.post('/:Email/:ConflictId/', (req, res) => {
                  ConflictId:req.params.ConflictId,
                  Email:req.params.Email
                 }).then(function(result){
-                    res.status(200).json("Answer Submitted Sucessfully..!!")
+                    res.status(200).json("FeedBack Submitted Sucessfully..!!")
                 })
              }
              else{
