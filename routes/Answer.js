@@ -19,7 +19,7 @@ answers.post('/submit/', (req, res) => {
             Answer:formData[i].Answer,
             AnswerType:formData[i].AnswerType
         }
-        qId=userdata[k].QuestionId;
+        qId=formData[i].QuestionId
         Answer.create(data)
          .then(function(result){
              if(result){
