@@ -4,7 +4,8 @@ const cors = require('cors')
 const User = require('../models/User')
 const UserType = require('../models/UserType')
 users.use(cors())
-
+const Sequelize = require('sequelize')
+const db = require('../database/db.js')
 
 //creating new user
 users.post('/register', (req, res) => {
@@ -107,7 +108,27 @@ users.get('/profile/:Email/', (req, res) => {
     .catch(err => {
       res.status(400).json('error: ' + err)
     })
-})
+});
+
+//get list of users who have filled form of that problem 
+users.get('/:title', (req, res) => {
+  db.sequelize.query("SELECT DISTINCT  users.FirstName,users.LastName,users.Email,Conflicts.title "
+  +"FROM Forms,Questions,users,UserAnswers,Conflicts WHERE Questions.QuestionId=UserAnswers.QuestionId "+
+  "AND UserAnswers.Email=users.Email AND Forms.FormId=Questions.FormId "+
+  "AND Conflicts.title IN(:title)",{
+  replacements: {title: req.params.title},
+  type: db.sequelize.QueryTypes.SELECT
+  })
+  .then(function(result){
+    if(result){
+      res.status(200).json(result);
+    }
+    else{
+      res.status(404).json("No form filled by that user still..")
+    }
+  
+  })
+});
 
 //update profile
 users.put("/profile/:Email",function(req,res){

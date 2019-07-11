@@ -8,8 +8,18 @@ answers.use(cors())
 const Sequelize = require('sequelize')
 const db = require('../database/db.js')
 
-answers.post('/:Email/:QuestionId/', (req, res) => {
-    if(req.body.Answer!="" & req.body.Answer!=null & req.body.AnswerType!="" & req.body.AnswerType!=null){
+answers.post('/submit/', (req, res) => {
+    var data;
+    for(i in req.body.data){
+        var data={
+            Answer:[i].Answer,
+            AnswerType:[i].AnswerType,
+            Email:[i].Email,
+            QuestionId:[i].QuestionId,
+        }
+    }
+    console.log(data);
+   /* if(req.body.Answer!="" & req.body.Answer!=null & req.body.AnswerType!="" & req.body.AnswerType!=null){
         var data={
             Answer:req.body.Answer,
             AnswerType:req.body.AnswerType
@@ -35,7 +45,7 @@ answers.post('/:Email/:QuestionId/', (req, res) => {
     }else{
         res.status(400).send("Invlaid data.")
     }
-  
+  */
 });
 //get submitted answers
 answers.get('/:Email/:title', (req, res) => {
@@ -60,7 +70,6 @@ answers.get('/:Email/:title', (req, res) => {
             //console.log(userInfo.Gender);
             //console.log(qForm[0].Question);
             //JSON.stringify(userInfo);
-            userInfo=JSON.stringify(userInfo);
             res.status(200).json({userInfo,qForm});
         })
 
