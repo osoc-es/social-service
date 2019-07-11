@@ -20,7 +20,7 @@ answers.post('/submit/', (req, res) => {
             QuestionId:formData[i].QuestionId
         }
      }   
-     res.status(200).send({data});
+     res.status(200).send(req.body.data);
     /* if(req.body.Answer!="" & req.body.Answer!=null & req.body.AnswerType!="" & req.body.AnswerType!=null){
         var data={
             Answer:req.body.Answer,
