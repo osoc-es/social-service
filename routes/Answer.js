@@ -10,20 +10,22 @@ const db = require('../database/db.js')
 const fs = require('fs');
 const Json2csvParser = require('json2csv').Parser;
 
-answers.post('/submit/', (req, res) => {  
+answers.post('/submit/', (req, res) => { 
     if(req.body.data!=null){
+    var qId;
     for(i in req.body.data){
         var formData=req.body.data;
         var data={
             Answer:formData[i].Answer,
             AnswerType:formData[i].AnswerType
         }
+        qId=formData[i].QuestionId;
         Answer.create(data)
          .then(function(result){
              if(result){
                 UserAnswer.create({
                  Email:formData[i].Email,
-                 QuestionId:formData[i].QuestionId,
+                 QuestionId:qId,
                  AnswerId:result.AnswerId
                 }).then(function(result){
                     res.status(200).json("Answer Submitted Sucessfully..!!")
