@@ -11,17 +11,16 @@ const fs = require('fs');
 const Json2csvParser = require('json2csv').Parser;
 
 answers.post('/submit/', (req, res) => {
-    var data;
     for(i in req.body.data){
+        var formData=req.body.data;
         var data={
-            Answer:[i].Answer,
-            AnswerType:[i].AnswerType,
-            Email:[i].Email,
-            QuestionId:[i].QuestionId,
+            Answer:formData[i].Answer,
+            AnswerType:formData[i].AnswerType,
+            Email:formData[i].Email,
+            QuestionId:formData[i].QuestionId
         }
      }   
-     var v=req.body.data;
-     res.status(200).send({data,v});
+     res.status(200).send({data});
     /* if(req.body.Answer!="" & req.body.Answer!=null & req.body.AnswerType!="" & req.body.AnswerType!=null){
         var data={
             Answer:req.body.Answer,
