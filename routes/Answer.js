@@ -7,6 +7,8 @@ const UserAnswer = require('../models/UserAnswer')
 answers.use(cors())
 const Sequelize = require('sequelize')
 const db = require('../database/db.js')
+const fs = require('fs');
+const Json2csvParser = require('json2csv').Parser;
 
 answers.post('/submit/', (req, res) => {
     var data;
@@ -17,9 +19,10 @@ answers.post('/submit/', (req, res) => {
             Email:[i].Email,
             QuestionId:[i].QuestionId,
         }
-    }
-    console.log(data);
-   /* if(req.body.Answer!="" & req.body.Answer!=null & req.body.AnswerType!="" & req.body.AnswerType!=null){
+     }   
+     var v=req.body.data;
+     res.status(200).send({data,v});
+    /* if(req.body.Answer!="" & req.body.Answer!=null & req.body.AnswerType!="" & req.body.AnswerType!=null){
         var data={
             Answer:req.body.Answer,
             AnswerType:req.body.AnswerType
@@ -58,8 +61,10 @@ answers.get('/:Email/:title', (req, res) => {
     })
     .then(function(result){
         var qForm=result;
+        if(result!=null){
         User.findOne({ where: {Email: req.params.Email }})
         .then(function(result){
+            if(result){
             var userInfo={
                 FirstName:result.FirstName,
                 LastName:result.LastName,
@@ -71,8 +76,16 @@ answers.get('/:Email/:title', (req, res) => {
             //console.log(qForm[0].Question);
             //JSON.stringify(userInfo);
             res.status(200).json({userInfo,qForm});
+        }
+        else{
+            res.status(404).json("not found..")
+        }
         })
+       }else{
+           res.status(404).json("not found..")
+       }
 
     })
+
 });
 module.exports = answers

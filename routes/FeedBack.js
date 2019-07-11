@@ -19,7 +19,12 @@ feedbacks.post('/:Email/:ConflictId/', (req, res) => {
                  ConflictId:req.params.ConflictId,
                  Email:req.params.Email
                 }).then(function(result){
-                    res.status(200).json("FeedBack Submitted Sucessfully..!!")
+                    if(result){
+                        res.status(200).json("FeedBack Submitted Sucessfully..!!")
+                    }
+                    else{
+                        res.status(400).json("Something wen wrong..!!")
+                    }
                 })
              }
              else{
