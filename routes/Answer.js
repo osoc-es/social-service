@@ -11,6 +11,7 @@ const fs = require('fs');
 const Json2csvParser = require('json2csv').Parser;
 
 answers.post('/submit/', (req, res) => {
+    var data;
     for(i in req.body.data){
         var formData=req.body.data;
         var data={
@@ -20,7 +21,7 @@ answers.post('/submit/', (req, res) => {
             QuestionId:formData[i].QuestionId
         }
      }   
-     res.status(200).send(req.body.data);
+     res.status(200).send(data);
     /* if(req.body.Answer!="" & req.body.Answer!=null & req.body.AnswerType!="" & req.body.AnswerType!=null){
         var data={
             Answer:req.body.Answer,
