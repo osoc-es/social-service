@@ -19,20 +19,18 @@ answers.post('/submit/', (req, res) => {
             Answer:formData[i].Answer,
             AnswerType:formData[i].AnswerType
         }
+        qId=userdata[k].QuestionId;
         Answer.create(data)
          .then(function(result){
              if(result){
-                 for(k in req.body.data){
-                 var userdata=req.body.data;
-                 UserAnswer.create({
-                 Email:userdata[k].Email,
-                 QuestionId:userdata[k].QuestionId,
+                    UserAnswer.create({
+                 Email:formData[i].Email,
+                 QuestionId:qId,
                  AnswerId:result.AnswerId
                 }).then(function(result){
                     res.status(200).json("Answer Submitted Sucessfully..!!")
                 })
             }
-             }
              else{
                  res.status(409).json("something went wrong");
              }
