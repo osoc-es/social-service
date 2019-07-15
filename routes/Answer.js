@@ -90,7 +90,6 @@ answers.get('/:Email/:title', (req, res) => {
             }
             //console.log(userInfo.Gender);
             //console.log(qForm[0].Question);
-            //JSON.stringify(userInfo);
             res.status(200).json({userInfo,qForm});
         }
         else{

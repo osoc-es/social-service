@@ -10,6 +10,7 @@ var Forms = require('./routes/Forms')
 var Questions = require('./routes/Questions')
 var Answers = require('./routes/Answer')
 var FeedBacks = require('./routes/FeedBack')
+var Organizations = require('./routes/Organization')
 // simple logger for this router's requests
 // all requests to this router will first hit this middleware
 router.use(function(req, res, next) {
@@ -26,6 +27,7 @@ router.use("/forms",Forms)
 router.use("/questions",Questions)
 router.use("/answers",Answers)
 router.use("/answers",FeedBacks)
+router.use("/organization",Organizations)
 // always invoked
 //router.use(function(req, res, next) {
 //  res.send('Hello World');

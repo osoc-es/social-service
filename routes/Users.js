@@ -107,36 +107,6 @@ users.get('/profile/:Email/', (req, res) => {
         res.status(404).json("user not found..")
       }
     });
-  /*User.findOne({
-    where: {
-      Email:req.params.Email
-    }
-    //,attributes: { exclude: ['Password'] }
-  })
-    .then(user => {
-      if (user) {
-        db.sequelize.query("SELECT * FROM users,usertypes"
-        +" WHERE usertypes.id IN(:id) AND "+
-        "users.Email IN(:Email)",{
-        replacements: {Email: req.params.Email,id:user.id},
-        type: db.sequelize.QueryTypes.SELECT
-        })
-        .then(function(result){
-          res.status(200).json(
-            {
-              Email:result.Email,UserType:result.title,FirstName:result.FirstName,LastName:result.LastName,
-              Address:result.Address,Gender:result.Gender,DOB:result.DOB
-            }
-            )
-        })
-
-      } else {
-        res.status(404).json('User does not exist');
-      }
-    })
-    .catch(err => {
-      res.status(400).json('error: ' + err)
-    })*/
 });
 
 //get list of users who have filled form of that problem 
