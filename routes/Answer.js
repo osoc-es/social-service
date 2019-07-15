@@ -13,19 +13,28 @@ const Json2csvParser = require('json2csv').Parser;
 
 answers.post('/submit/', (req, res) => { 
     if(req.body.data!=null){
-            for(i in req.body.data){
-                var formData=req.body.data;
-                var data={
-                    Answer:formData[i].Answer,
-                    AnswerType:formData[i].AnswerType
-                }
-                Answer.create(data);  
-              }
-              db.sequelize.query("SELECT * FROM Answers ORDER BY AnswerId DESC LIMIT 1",
-        {
-          type: db.sequelize.QueryTypes.SELECT
-        }) 
-          .then(function(result){
+        formData=req.body.data[0];
+        //console.log(formData.Email+","+formData.QuestionId);
+        UserAnswer.findOne({
+            where: {
+              Email: formData.Email,
+              QuestionId:formData.QuestionId
+            }
+          }).then(found => {
+            if (!found) {
+                for(i in req.body.data){
+                    var formData=req.body.data;
+                    var data={
+                        Answer:formData[i].Answer,
+                        AnswerType:formData[i].AnswerType
+                    }
+                    Answer.create(data);  
+                  }
+                  db.sequelize.query("SELECT * FROM Answers ORDER BY AnswerId DESC LIMIT 1",
+                    {
+                     type: db.sequelize.QueryTypes.SELECT
+                   }) 
+                 .then(function(result){
                  //console.log(result);
                  var id;
                  try {
@@ -33,20 +42,27 @@ answers.post('/submit/', (req, res) => {
                  } catch (e) {
                     id=1;
                  }
-                 for(i in req.body.data){
-                    var formData=req.body.data;
-                    UserAnswer.create({
+                 try {
+                    for(i in req.body.data){
+                     var formData=req.body.data;
+                     UserAnswer.create({
                        Email:formData[i].Email,
                        QuestionId:formData[i].QuestionId,
                        AnswerId:id
-                    });
-                    id=id+1;
+                     });
+                     id=id+1;
+                    } 
+                 } catch (error) {
+                  res.status(400).send("Some thing went wromg.")
                 }
-                return "Ok";
-            });
-               res.status(200).json("Answer Submitted Sucessfully..!!")     
+                }); 
+            res.status(200).json("Answer Submitted Sucessfully..!!") 
+            }else{
+                res.status(409).json("You have Submitted this form already..!!") 
+            }
+        });           
     }else{
-        res.status(400).send("Invlaid data.")
+        res.status(400).send("Invlaid data.");
     }
   
 });
@@ -89,26 +105,29 @@ answers.get('/:Email/:title', (req, res) => {
 
 });
 
-function addAnswers(req){
-    db.sequelize.query("SELECT * FROM Answers ORDER BY AnswerId DESC LIMIT 1",
-        {
-          type: db.sequelize.QueryTypes.SELECT
-        }) 
-          .then(function(result){
-                 //console.log(result[0].AnswerId);
-                 if(result==null){id=1}
-                 var id=result[0].AnswerId+1;
-                 for(i in req){
-                    var formData=req;
-                    UserAnswer.create({
-                       Email:formData[i].Email,
-                       QuestionId:formData[i].QuestionId,
-                       AnswerId:id
-                    });
-                    id=id+1;
+function isFormSubmited(req){
+    formData=req[0];
+    //console.log(formData.Email+","+formData.QuestionId);
+    UserAnswer.findOne({
+        where: {
+          Email: formData.Email,
+          QuestionId:formData.QuestionId
+        }
+      }).then(found => {
+        if (!found) {
+            for(i in req){
+                var formData=req;
+                var data={
+                    Answer:formData[i].Answer,
+                    AnswerType:formData[i].AnswerType
                 }
-                return "Ok";
-            });
+                Answer.create(data);  
+              }
+          return "False";
+        }else{
+           return "True";
+        }
+    })
 }
 
 module.exports = answers

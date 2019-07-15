@@ -14,7 +14,6 @@ module.exports = db.sequelize.define(
     },
     AnswerId: {
       type: Sequelize.INTEGER,
-      primaryKey: true
     } 
   },
   {
