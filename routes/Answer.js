@@ -5,6 +5,7 @@ const Answer = require('../models/Answer')
 const User = require('../models/User')
 const UserAnswer = require('../models/UserAnswer')
 answers.use(cors())
+var async = require("async");
 const Sequelize = require('sequelize')
 const db = require('../database/db.js')
 const fs = require('fs');
@@ -12,33 +13,38 @@ const Json2csvParser = require('json2csv').Parser;
 
 answers.post('/submit/', (req, res) => { 
     if(req.body.data!=null){
-    var qId;
-    for(i in req.body.data){
-        var formData=req.body.data;
-        var data={
-            Answer:formData[i].Answer,
-            AnswerType:formData[i].AnswerType
-        }
-        qId=formData[i].QuestionId
-        Answer.create(data)
-         .then(function(result){
-             if(result){
+            for(i in req.body.data){
+                var formData=req.body.data;
+                var data={
+                    Answer:formData[i].Answer,
+                    AnswerType:formData[i].AnswerType
+                }
+                Answer.create(data);  
+              }
+              db.sequelize.query("SELECT * FROM Answers ORDER BY AnswerId DESC LIMIT 1",
+        {
+          type: db.sequelize.QueryTypes.SELECT
+        }) 
+          .then(function(result){
+                 //console.log(result);
+                 var id;
+                 try {
+                    id=result[0].AnswerId+1;
+                 } catch (e) {
+                    id=1;
+                 }
+                 for(i in req.body.data){
+                    var formData=req.body.data;
                     UserAnswer.create({
-                 Email:formData[i].Email,
-                 QuestionId:qId,
-                 AnswerId:result.AnswerId
-                }).then(function(result){
-                    res.status(200).json("Answer Submitted Sucessfully..!!")
-                })
-            }
-             else{
-                 res.status(409).json("something went wrong");
-             }
-         })
-         .catch(err => {
-            res.status(400).json('error: ' + err)
-          })
-        }
+                       Email:formData[i].Email,
+                       QuestionId:formData[i].QuestionId,
+                       AnswerId:id
+                    });
+                    id=id+1;
+                }
+                return "Ok";
+            });
+               res.status(200).json("Answer Submitted Sucessfully..!!")     
     }else{
         res.status(400).send("Invlaid data.")
     }
@@ -46,7 +52,7 @@ answers.post('/submit/', (req, res) => {
 });
 //get submitted answers
 answers.get('/:Email/:title', (req, res) => {
-    db.sequelize.query("SELECT DISTINCT Questions.Question,Answers.Answer FROM Forms,"
+    db.sequelize.query("SELECT Questions.Question,Answers.Answer FROM Forms,"
     +"Questions,users,UserAnswers,Answers WHERE Questions.QuestionId=UserAnswers.QuestionId AND "+
     "UserAnswers.Email=users.Email AND Forms.FormId=Questions.FormId "+
     "AND UserAnswers.Email IN(:Email)",{
@@ -82,4 +88,27 @@ answers.get('/:Email/:title', (req, res) => {
     })
 
 });
+
+function addAnswers(req){
+    db.sequelize.query("SELECT * FROM Answers ORDER BY AnswerId DESC LIMIT 1",
+        {
+          type: db.sequelize.QueryTypes.SELECT
+        }) 
+          .then(function(result){
+                 //console.log(result[0].AnswerId);
+                 if(result==null){id=1}
+                 var id=result[0].AnswerId+1;
+                 for(i in req){
+                    var formData=req;
+                    UserAnswer.create({
+                       Email:formData[i].Email,
+                       QuestionId:formData[i].QuestionId,
+                       AnswerId:id
+                    });
+                    id=id+1;
+                }
+                return "Ok";
+            });
+}
+
 module.exports = answers
