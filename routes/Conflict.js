@@ -34,8 +34,9 @@ conflicts.post('/add/:ProjectId/', (req, res) => {
 
 });
 //get conflicts
-conflicts.get('/', (req, res) => {
+conflicts.get('/:ProjectId/', (req, res) => {
     Conflict.findAll({
+      where:{ProjectId:req.params.ProjectId}
     })
       .then(conflict => {
         if (conflict) {
