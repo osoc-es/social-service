@@ -11,6 +11,9 @@ module.exports = db.sequelize.define(
     id: {
       type: Sequelize.INTEGER
     },
+    OrgId: {
+      type: Sequelize.INTEGER
+    },
     Password: {
       type: Sequelize.STRING
     },
