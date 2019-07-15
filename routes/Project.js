@@ -34,8 +34,9 @@ projects.post('/add/:OrgId/', (req, res) => {
 
 });
 //get organization
-projects.get('/', (req, res) => {
+projects.get('/:OrgId/', (req, res) => {
     Project.findAll({
+      where:{OrgId:req.params.OrgId}
     })
       .then(project => {
         if (project) {

@@ -29,7 +29,7 @@ router.use("/questions",Questions)
 router.use("/answers",Answers)
 router.use("/answers",FeedBacks)
 router.use("/organizations",Organizations)
-router.use("/project",Projects)
+router.use("/projects",Projects)
 // always invoked
 //router.use(function(req, res, next) {
 //  res.send('Hello World');
