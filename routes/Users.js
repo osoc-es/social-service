@@ -81,7 +81,7 @@ else{
 
 //get profile
 users.get('/profile/:Email/', (req, res) => {
-  User.findOne({
+   User.findOne({
     where: {
       Email:req.params.Email
     }
@@ -89,14 +89,31 @@ users.get('/profile/:Email/', (req, res) => {
   })
     .then(user => {
       if (user) {
-        UserType.findOne({
-          id:user.id
+        UserType.findAll({ where: {id: user.id }, include: [User]})
+        .then(function(result){
+            res.status(200).json(result);
+        })
+      }
+    });
+  /*User.findOne({
+    where: {
+      Email:req.params.Email
+    }
+    //,attributes: { exclude: ['Password'] }
+  })
+    .then(user => {
+      if (user) {
+        db.sequelize.query("SELECT * FROM users,usertypes"
+        +" WHERE usertypes.id IN(:id) AND "+
+        "users.Email IN(:Email)",{
+        replacements: {Email: req.params.Email,id:user.id},
+        type: db.sequelize.QueryTypes.SELECT
         })
         .then(function(result){
           res.status(200).json(
             {
-              Email:user.Email,UserType:result.title,FirstName:user.FirstName,LastName:user.LastName,
-              Address:user.Address,Gender:user.Gender,DOB:user.DOB
+              Email:result.Email,UserType:result.title,FirstName:result.FirstName,LastName:result.LastName,
+              Address:result.Address,Gender:result.Gender,DOB:result.DOB
             }
             )
         })
@@ -107,7 +124,7 @@ users.get('/profile/:Email/', (req, res) => {
     })
     .catch(err => {
       res.status(400).json('error: ' + err)
-    })
+    })*/
 });
 
 //get list of users who have filled form of that problem 
@@ -182,23 +199,6 @@ function validateRegister(req){
     return "True";
   }
 }
-/*var Validator = require('jsonschema').Validator;
-var registerValidator = new Validator();
-var registerSchema = {
-  "id": "SignUp",
-  "type": "object",
-  "properties": {
-    "Email": {"type": "string"},
-    "Password": {"type": "string"},
-    "FirstName": {"type": "string"},
-    "LastName": {"type": "string"},
-    "ContactNumber":{"type":"string", optional: true },
-    "Address":{"type":"string", optional: true },
-    "Gender":{"type":"string", optional: true },
-    "DOB":{"type":"date", optional: true }
-    
-  },
-  "required": ["Email","Password","FirstName","LastName"]
-};
-*/
+UserType.hasMany(User,{foreignKey: 'id'});
+User.belongsTo(UserType,{foreignKey: 'id'});
 module.exports = users

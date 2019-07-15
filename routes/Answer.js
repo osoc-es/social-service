@@ -68,9 +68,9 @@ answers.post('/submit/', (req, res) => {
 });
 //get submitted answers
 answers.get('/:Email/:title', (req, res) => {
-    db.sequelize.query("SELECT Questions.Question,Answers.Answer FROM Forms,"
+    db.sequelize.query("SELECT DISTINCT Questions.Question,Answers.Answer FROM Forms,"
     +"Questions,users,UserAnswers,Answers WHERE Questions.QuestionId=UserAnswers.QuestionId AND "+
-    "UserAnswers.Email=users.Email AND Forms.FormId=Questions.FormId "+
+    "UserAnswers.Email=users.Email "+
     "AND UserAnswers.Email IN(:Email)",{
     replacements: {Email: req.params.Email},
     type: db.sequelize.QueryTypes.SELECT
