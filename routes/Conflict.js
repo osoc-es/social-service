@@ -5,7 +5,7 @@ const Conflict = require('../models/Conflict')
 conflicts.use(cors())
 
 //creating new conflict
-conflicts.post('/add', (req, res) => {
+conflicts.post('/add/:ProjectId/', (req, res) => {
     if(req.body.title!=null && req.body.title!=""){
         Conflict.findOne({
             where: {
@@ -15,6 +15,7 @@ conflicts.post('/add', (req, res) => {
             if (!conlict) {
                 Conflict.create(
                   {
+                  ProjectId:req.params.ProjectId,
                   title:req.body.title,
                   description: req.body.description
                   }

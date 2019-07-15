@@ -12,6 +12,9 @@ module.exports = db.sequelize.define(
     OrgId: {
       type: Sequelize.INTEGER
     },
+    name:{
+      type: Sequelize.STRING
+    },
     Description: {
       type: Sequelize.STRING
     }
