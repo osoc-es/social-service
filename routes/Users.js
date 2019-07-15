@@ -94,6 +94,9 @@ users.get('/profile/:Email/', (req, res) => {
             res.status(200).json(result);
         })
       }
+      else{
+        res.status(404).json("user not found..")
+      }
     });
   /*User.findOne({
     where: {
