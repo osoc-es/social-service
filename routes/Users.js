@@ -202,6 +202,6 @@ function validateRegister(req){
     return "True";
   }
 }
-UserType.hasMany(User,{foreignKey: 'id'});
+UserType.hasOne(User,{foreignKey: 'id'});
 User.belongsTo(UserType,{foreignKey: 'id'});
 module.exports = users
