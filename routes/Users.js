@@ -118,7 +118,7 @@ users.get('/profile/:Email/', (req, res) => {
 
 //get list of users who have filled form of that problem 
 users.get('/:title', (req, res) => {
-  db.sequelize.query("SELECT DISTINCT  users.FirstName,users.LastName,users.Email,Conflicts.title "
+  db.sequelize.query("SELECT DISTINCT users.FirstName,users.LastName,users.Email,Conflicts.title "
   +"FROM Forms,Questions,users,UserAnswers,Conflicts WHERE Questions.QuestionId=UserAnswers.QuestionId "+
   "AND UserAnswers.Email=users.Email AND Forms.FormId=Questions.FormId "+
   "AND Conflicts.title IN(:title)",{

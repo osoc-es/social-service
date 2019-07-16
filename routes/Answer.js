@@ -93,7 +93,6 @@ answers.post('/submit/', (req, res) => {
                                      })
                                 }
                               })
-
                           })
                      }
                   })
@@ -116,10 +115,11 @@ answers.get('/:title/', (req, res) => {
       })
         .then(report => {
           if (report) {
-              	//--> Convert JSON to CSV data
+                  //--> Convert JSON to CSV data
+                const reportData = JSON.parse(JSON.stringify(report));
 		        const csvFields = ["Id","Email","ProblemType","QuestionId","Question","Options","Answer","time"];
 		        const json2csvParser = new Json2csvParser({ csvFields });
-                const csv = json2csvParser.parse(report);
+                const csv = json2csvParser.parse(reportData);
                 var currentDate=new Date();
                 //saving file
                 fs.writeFile("Report-"+currentDate+".csv", csv, function(err) {
