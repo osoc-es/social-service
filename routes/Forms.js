@@ -7,8 +7,7 @@ forms.use(cors())
 
 //creating new form
 forms.post('/add/:ConflictId/', (req, res) => {
-    if(req.body.description!=null && req.body.description!="" 
-                           &&req.body.ConflictId!=null&&req.body.ConflictId!=""){
+    if(req.body.description!=null && req.body.description!=""){
                 var data={
                     ConflictId:req.params.ConflictId,
                     description:req.body.description
