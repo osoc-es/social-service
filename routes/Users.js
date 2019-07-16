@@ -60,7 +60,7 @@ catch (error ) {
 })
 //login
 users.post('/login', (req, res) => {
-if(req.body.Email!=null || req.body.Password!=null){
+if(req.body.Email!=null & req.body.Password!=null){
   var getPassword=req.body.Password+"";
   var hashPassword = crypto.createHash('sha256').update(getPassword).digest('hex');
   console.log(hashPassword);
@@ -74,7 +74,7 @@ if(req.body.Email!=null || req.body.Password!=null){
       if (user) {
         res.status(200).json(user.FirstName+" "+user.LastName);
       } else {
-        res.status(404).json("Email|Passowrd does not match.")
+        res.status(404).json("Email|Password does not match.")
       }
     })
     .catch(err => {
@@ -82,7 +82,7 @@ if(req.body.Email!=null || req.body.Password!=null){
     })
 }
 else{
-  res.status(400).json("Please Enter Email and Passord.");
+  res.status(400).json("Please Enter Email and Password both.");
 }
 })
 
