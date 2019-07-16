@@ -19,8 +19,10 @@ conflicts.post('/add/:ProjectId/', (req, res) => {
                   title:req.body.title,
                   description: req.body.description
                   }
-                )
-                res.status(200).json(conlict)
+                ).then(function(conflict){
+                  res.status(200).json(conflict);
+                })
+                
             }else{
                res.status(409).json("Conflict already exists..!!")
             }
