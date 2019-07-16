@@ -4,6 +4,7 @@ const cors = require('cors')
 const User = require('../models/User')
 const UserType = require('../models/UserType')
 users.use(cors())
+var crypto = require('crypto');
 const Sequelize = require('sequelize')
 const db = require('../database/db.js')
 
@@ -22,11 +23,13 @@ User.findOne({
   if (!user) {
     UserType.create({title:type})
     .then(function(result) {
+      var getPassword=req.body.Password+"";
+      var hashPassword = crypto.createHash('sha256').update(getPassword).digest('hex');
       const userData = {
         Email: req.body.Email,
         id: result.id,
         OrgId:1,
-        Password: req.body.Password,
+        Password: hashPassword,
         FirstName: req.body.FirstName,
         LastName: req.body.LastName,
         ContactNumber: req.body.ContactNumber,
@@ -58,15 +61,18 @@ catch (error ) {
 //login
 users.post('/login', (req, res) => {
 if(req.body.Email!=null || req.body.Password!=null){
+  var getPassword=req.body.Password+"";
+  var hashPassword = crypto.createHash('sha256').update(getPassword).digest('hex');
+  console.log(hashPassword);
   User.findOne({
     where: {
       Email: req.body.Email,
-      Password: req.body.Password
+      Password: hashPassword
     }
   })
     .then(user => {
       if (user) {
-        res.status(200).json(user.FirstName+""+user.LastName);
+        res.status(200).json(user.FirstName+" "+user.LastName);
       } else {
         res.status(404).json("Email|Passowrd does not match.")
       }
@@ -76,7 +82,7 @@ if(req.body.Email!=null || req.body.Password!=null){
     })
 }
 else{
-  res.status(400).json("Please Email and Passord both..");
+  res.status(400).json("Please Enter Email and Passord.");
 }
 })
 

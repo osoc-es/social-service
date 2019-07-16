@@ -7,14 +7,14 @@ const Form = require('../models/Form')
 questions.use(cors())
 
 //creating new Question
-questions.post('/add/:FormId', (req, res) => {
+questions.post('/add/:FormId/', (req, res) => {
         var validateData=validateQuestion(req);
         if(validateData=="True")
         {
             Form.findOne({
             where: {
             FormId: req.params.FormId
-            }
+             }
           }).then(function(form){
               if(form){
                 const questionData = {
@@ -64,7 +64,49 @@ questions.post('/add/:FormId', (req, res) => {
             res.status(200).json(result);
         })
     });
-    function validateQuestion(req){
+
+//updating Question
+questions.put('/update/:FormId/:QuestionId/', (req, res) => {
+    var validateData=validateQuestion(req);
+    if(validateData=="True")
+    {
+            Question.update(
+                {
+                    QustionType: req.body.QustionType,
+                    Question: req.body.Question,
+                    description: req.body.description,
+                    isMandatory: req.body.isMandatory
+                },
+                {
+                    returning:true,where:{QuestionId:req.params.QuestionId,FormId:req.params.FormId}
+                }
+            )
+            .then(function(result){
+                for (i = 0; i < req.body.Options.length; i++) {
+                const optionData = {
+                    OptionDescription: req.body.Options[i]
+                }
+                Option.update(optionData,{returning:true,where:{QuestionId:req.params.QuestionId}})
+                .then(function(option){
+                    if(option){
+                        res.status(200).json("Question updated successfully.")  
+                    }else{
+                        res.status(400).json("Something wrong with options..")  
+                    }
+
+                })
+                }
+              })
+    }
+    else
+    {
+        res.status(400).json(validateData);
+    }
+ 
+
+});
+
+function validateQuestion(req){
         if(req.params.FormId==""||req.params.FormId==null){
             return "FormId can not empty."
         }

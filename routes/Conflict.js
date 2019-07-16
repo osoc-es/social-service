@@ -54,7 +54,8 @@ conflicts.get('/:ProjectId/', (req, res) => {
 //update conflict
 conflicts.put("/update/:ConflictId/",function(req,res){
   Conflict.update(
-    { title:req.body.title,
+    { 
+      title:req.body.title,
       description: req.body.description
     },
     {returning:true,where:{ConflictId:req.params.ConflictId}}
