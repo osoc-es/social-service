@@ -14,7 +14,7 @@ questions.post('/add/:FormId', (req, res) => {
             Form.findOne({
             where: {
             FormId: req.params.FormId
-             }
+            }
           }).then(function(form){
               if(form){
                 const questionData = {
@@ -32,8 +32,15 @@ questions.post('/add/:FormId', (req, res) => {
                             OptionDescription: req.body.Options[i]
                         };
                         Option.create(optionData)
+                        .then(function(option){
+                            if(option){
+                                res.status(200).json("Question added successfully.")  
+                            }else{
+                                res.status(400).json("Something wrong with options..")  
+                            }
+
+                        })
                         }
-                        res.status(200).json("Question added successfully.")  
                       })
               }
               else{
