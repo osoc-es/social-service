@@ -109,13 +109,24 @@ answers.post('/submit/', (req, res) => {
   
 });
 //get submitted answers
-answers.get('/:Email/', (req, res) => {
+answers.get('/:title/', (req, res) => {
     Report.findAll({
-        where:{Email:req.params.Email}
+        where:{ProblemType:req.params.title}
+        //,group:["Email"]
       })
         .then(report => {
           if (report) {
-            res.status(200).json(report)
+              	//--> Convert JSON to CSV data
+		        const csvFields = ["Id","Email","ProblemType","QuestionId","Question","Options","Answer","time"];
+		        const json2csvParser = new Json2csvParser({ csvFields });
+                const csv = json2csvParser.parse(report);
+                var currentDate=new Date();
+                //saving file
+                fs.writeFile("Report-"+currentDate+".csv", csv, function(err) {
+                    if (err) throw err;
+                    console.log('file saved');
+                });
+                res.status(200).json("Check Report-"+currentDate+".csv file in root project folder. ")
           } else {
             res.status(404).json('User have not filled anything yet..')
           }
