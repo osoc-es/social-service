@@ -4,6 +4,10 @@ const cors = require('cors')
 const Answer = require('../models/Answer')
 const User = require('../models/User')
 const UserAnswer = require('../models/UserAnswer')
+const Report = require('../models/Report')
+const Question = require('../models/Question')
+const Conflict = require('../models/Conflict')
+const Form = require('../models/Form')
 answers.use(cors())
 var async = require("async");
 const Sequelize = require('sequelize')
@@ -55,6 +59,44 @@ answers.post('/submit/', (req, res) => {
                  } catch (error) {
                   res.status(400).send("Some thing went wromg.")
                 }
+                //add data to report
+                Question.findOne({
+                    where: {
+                      QuestionId:req.body.data[0].QuestionId
+                    }
+                  }).then(function(found){
+                     if(found){
+                         var formId=found.FormId;
+                         Form.findOne({
+                            where: {
+                              FormId:formId
+                            }
+                          }).then(function(found){
+                              var ConflictId=found.ConflictId;
+                              Conflict.findOne({
+                                where: {
+                                    ConflictId:ConflictId
+                                }
+                              }).then(function(found){
+                                var currentDate = new Date();
+                                var pType=found.title;
+                                for(i in req.body.data){
+                                    var formData=req.body.data;
+                                     Report.create({
+                                        Email:formData[i].Email,
+                                        ProblemType:pType,
+                                        QuestionId:formData[i].QuestionId,
+                                        Question:formData[i].Question,
+                                        Options:formData[i].Options,
+                                        Answer:formData[i].Answer,
+                                        time:currentDate
+                                     })
+                                }
+                              })
+
+                          })
+                     }
+                  })
                 }); 
             res.status(200).json("Answer Submitted Sucessfully..!!") 
             }else{
@@ -67,41 +109,21 @@ answers.post('/submit/', (req, res) => {
   
 });
 //get submitted answers
-answers.get('/:Email/:title', (req, res) => {
-    db.sequelize.query("SELECT DISTINCT Questions.Question,Answers.Answer FROM Forms,"
-    +"Questions,users,UserAnswers,Answers WHERE Questions.QuestionId=UserAnswers.QuestionId AND "+
-    "UserAnswers.Email=users.Email "+
-    "AND UserAnswers.Email IN(:Email)",{
-    replacements: {Email: req.params.Email},
-    type: db.sequelize.QueryTypes.SELECT
-    })
-    .then(function(result){
-        var qForm=result;
-        if(result!=null){
-        User.findOne({ where: {Email: req.params.Email }})
-        .then(function(result){
-            if(result){
-            var userInfo={
-                FirstName:result.FirstName,
-                LastName:result.LastName,
-                Gender:result.Gender,
-                Email:req.params.Email,
-                ProblemType:req.params.title
-            }
-            //console.log(userInfo.Gender);
-            //console.log(qForm[0].Question);
-            res.status(200).json({userInfo,qForm});
-        }
-        else{
-            res.status(404).json("not found..")
-        }
+answers.get('/:Email/', (req, res) => {
+    Report.findAll({
+        where:{Email:req.params.Email}
+      })
+        .then(report => {
+          if (report) {
+            res.status(200).json(report)
+          } else {
+            res.status(404).json('User have not filled anything yet..')
+          }
         })
-       }else{
-           res.status(404).json("not found..")
-       }
-
-    })
-
+        .catch(err => {
+          res.status(400).json('error: ' + err)
+        })
+ 
 });
 
 function isFormSubmited(req){
