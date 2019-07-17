@@ -6,7 +6,7 @@ const Option = require('../models/Option')
 const Form = require('../models/Form') 
 questions.use(cors())
 
-//creating new Question
+//adding new Question into form
 questions.post('/add/:FormId/', (req, res) => {
         var validateData=validateQuestion(req);
         if(validateData=="True")
@@ -31,6 +31,7 @@ questions.post('/add/:FormId/', (req, res) => {
                             QuestionId: result.QuestionId,
                             OptionDescription: req.body.Options[i]
                         };
+                        //adding options for question
                         Option.create(optionData)
                         /*.then(function(option){
                             if(option){
@@ -58,7 +59,7 @@ questions.post('/add/:FormId/', (req, res) => {
         }
      
     });
-//Get questioner for form
+//Get questioner for particular problem
     questions.get('/:FormId/', (req, res) => {
         Question.findAll({ where: {FormId: req.params.FormId }, include: [Option]})
         .then(function(result){
@@ -66,7 +67,7 @@ questions.post('/add/:FormId/', (req, res) => {
         })
     });
 
-//updating Question
+//updating Question of form
 questions.put('/update/:FormId/:QuestionId/', (req, res) => {
     var validateData=validateQuestion(req);
     if(validateData=="True")
@@ -99,7 +100,7 @@ questions.put('/update/:FormId/:QuestionId/', (req, res) => {
                 }
                 res.status(200).json("Question updated successfully.")  
             }else{
-                res.status(404).json("Question not found successfully.")  
+                res.status(404).json("Question not found.")  
             }
               })
     }
@@ -110,7 +111,7 @@ questions.put('/update/:FormId/:QuestionId/', (req, res) => {
  
 
 });
-
+//validating question data
 function validateQuestion(req){
         if(req.params.FormId==""||req.params.FormId==null){
             return "FormId can not empty."

@@ -3,18 +3,20 @@ const answers = express.Router()
 const cors = require('cors')
 const Answer = require('../models/Answer')
 const User = require('../models/User')
-const UserAnswer = require('../models/UserAnswer')
+//const UserAnswer = require('../models/UserAnswer')
 const Report = require('../models/Report')
 const Question = require('../models/Question')
 const Conflict = require('../models/Conflict')
 const Form = require('../models/Form')
 answers.use(cors())
-var async = require("async");
-const Sequelize = require('sequelize')
-const db = require('../database/db.js')
+//var async = require("async");
+//const Sequelize = require('sequelize')
+//const db = require('../database/db.js')
 const fs = require('fs');
 const Json2csvParser = require('json2csv').Parser;
 
+
+//submiting form with answers
 answers.post('/submit/', (req, res) => { 
     if(req.body.data!=null & req.body.data.length!=0){
         formData=req.body.data[0];
@@ -84,7 +86,7 @@ answers.post('/submit/', (req, res) => {
     }
   
 });
-//get submitted answers
+//get report of form in CSV file, filled by users 
 answers.get('/:title/:Email/', (req, res) => {
     Report.findAll({
         where:{ProblemType:req.params.title,Email:req.params.Email}
@@ -100,7 +102,6 @@ answers.get('/:title/:Email/', (req, res) => {
 		            const csvFields = ["Id","Email","ProblemType","QuestionId","Question","Options","Answer","time"];
 		            const json2csvParser = new Json2csvParser({ csvFields });
                 const csv = json2csvParser.parse(reportData);
-                //var currentDate=new Date();
                 //saving file
                 fs.writeFile(fileName, csv, function(err) {
                     if (err) throw err;

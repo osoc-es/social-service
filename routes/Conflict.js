@@ -75,18 +75,19 @@ conflicts.put("/update/:ProjectId/:ConflictId/",function(req,res){
 //deleting conflict
 conflicts.put("/delete/:ProjectId/:ConflictId/",function(req,res){
   Conflict.destroy(
- {where:{ConflictId:req.params.ConflictId,ProjectId:req.params.ProjectId}}
-).then(result => {
- if(result==null){
-  res.status(404).json("Conflict not found.")
- }
- else{
-  res.status(200).json("Conflict deleted.")
- }
-
-})
-.catch(err=>{
-res.status(400).json("error: "+err)
-})
+    {
+        where:{ConflictId:req.params.ConflictId,ProjectId:req.params.ProjectId}
+    }
+    ).then(result => {
+        if(result==null){
+          res.status(404).json("Conflict not found.")
+        }
+      else{
+         res.status(200).json("Conflict deleted.")
+      }
+    })
+  .catch(err=>{
+   res.status(400).json("error: "+err)
+   })
 });
 module.exports = conflicts

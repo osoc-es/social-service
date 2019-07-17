@@ -8,9 +8,8 @@ var crypto = require('crypto');
 const Sequelize = require('sequelize')
 const db = require('../database/db.js')
 
-//creating new user
+//creating a new user
 users.post('/register', (req, res) => {
-//var schemaResult=registerValidator.validate(req.body, registerSchema);
 try {
 var validateData=validateRegister(req);
 if(validateData=="True"){
@@ -58,7 +57,7 @@ catch (error ) {
   console.log(error.errorMessage)
 }
 })
-//login
+//login 
 users.post('/login/', (req, res) => {
 if(req.body.Email!=null & req.body.Password!=null){
   var getPassword=req.body.Password+"";
@@ -85,8 +84,7 @@ else{
   res.status(400).json("Please Enter Email and Password both.");
 }
 })
-
-//get profile
+//get user profile
 users.get('/profile/:Email/', (req, res) => {
    User.findOne({
     where: {
@@ -116,7 +114,7 @@ users.get('/profile/:Email/', (req, res) => {
     });
 });
 
-//get list of users who have filled form of that problem 
+//get list of users who have filled form of that problem category
 users.get('/:ProblemType/', (req, res) => {
   db.sequelize.query("SELECT DISTINCT users.FirstName,users.LastName,users.Email,users.Gender,Reports.ProblemType "
   +"FROM Reports,users where Reports.Email=users.Email "+
@@ -136,7 +134,7 @@ users.get('/:ProblemType/', (req, res) => {
 });
 
 //update profile
-users.put("/profile/:Email",function(req,res){
+users.put("/profile/:Email/",function(req,res){
      User.update(
        {FirstName:req.body.FirstName,LastName:req.body.LastName},
        {returning:true,where:{Email:req.params.Email}}
@@ -169,6 +167,7 @@ users.put("/delete/:Email/",function(req,res){
   res.status(400).json("error: "+err)
 })
 });
+//function to validate json data for creating new user
 function validateRegister(req){
   if(req.body.Email==""||req.body.Email==null){
     return "Email Can not be Empty.!"
