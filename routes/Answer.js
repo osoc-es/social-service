@@ -91,18 +91,23 @@ answers.get('/:title/:Email/', (req, res) => {
       })
         .then(report => {
           if (report) {
-                  //--> Convert JSON to CSV data
-            const reportData = JSON.parse(JSON.stringify(report));
-		        const csvFields = ["Id","Email","ProblemType","QuestionId","Question","Options","Answer","time"];
-		        const json2csvParser = new Json2csvParser({ csvFields });
+            User.findOne({
+              where:{Email:req.params.Email}
+            }).then(function(user){
+              var fileName=user.FirstName+"-"+user.LastName+"-"+req.params.title+"-report.csv";
+            //--> Convert JSON to CSV data
+                const reportData = JSON.parse(JSON.stringify(report));
+		            const csvFields = ["Id","Email","ProblemType","QuestionId","Question","Options","Answer","time"];
+		            const json2csvParser = new Json2csvParser({ csvFields });
                 const csv = json2csvParser.parse(reportData);
                 //var currentDate=new Date();
                 //saving file
-                fs.writeFile("Report-1.csv", csv, function(err) {
+                fs.writeFile(fileName, csv, function(err) {
                     if (err) throw err;
                     console.log('file saved');
                 });
-                res.status(200).json("Check Report-1.csv file in root project folder. ")
+                res.status(200).json("Check "+fileName+" file in root project folder. ")
+            })
           } else {
             res.status(404).json('User have not filled anything yet..')
           }

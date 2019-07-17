@@ -59,7 +59,7 @@ questions.post('/add/:FormId/', (req, res) => {
      
     });
 //Get questioner for form
-    questions.get('/:FormId', (req, res) => {
+    questions.get('/:FormId/', (req, res) => {
         Question.findAll({ where: {FormId: req.params.FormId }, include: [Option]})
         .then(function(result){
             res.status(200).json(result);
@@ -83,20 +83,24 @@ questions.put('/update/:FormId/:QuestionId/', (req, res) => {
                 }
             )
             .then(function(result){
+                if(result){
                 for (i = 0; i < req.body.Options.length; i++) {
                 const optionData = {
                     OptionDescription: req.body.Options[i]
                 }
                 Option.update(optionData,{returning:true,where:{QuestionId:req.params.QuestionId}})
-                .then(function(option){
+               /* .then(function(option){
                     if(option){
                         res.status(200).json("Question updated successfully.")  
                     }else{
                         res.status(400).json("Something wrong with options..")  
                     }
-
-                })
+                })*/
                 }
+                res.status(200).json("Question updated successfully.")  
+            }else{
+                res.status(404).json("Question not found successfully.")  
+            }
               })
     }
     else

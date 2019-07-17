@@ -59,7 +59,7 @@ catch (error ) {
 }
 })
 //login
-users.post('/login', (req, res) => {
+users.post('/login/', (req, res) => {
 if(req.body.Email!=null & req.body.Password!=null){
   var getPassword=req.body.Password+"";
   var hashPassword = crypto.createHash('sha256').update(getPassword).digest('hex');
@@ -154,7 +154,7 @@ users.put("/profile/:Email",function(req,res){
    })
 });
 //removing user
-users.put("/delete/:Email",function(req,res){
+users.put("/delete/:Email/",function(req,res){
   User.destroy(
     {where:{Email:req.params.Email}}
   ).then(result => {

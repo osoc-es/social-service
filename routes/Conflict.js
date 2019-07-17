@@ -52,13 +52,13 @@ conflicts.get('/:ProjectId/', (req, res) => {
       })
   })
 //update conflict
-conflicts.put("/update/:ConflictId/",function(req,res){
+conflicts.put("/update/:ProjectId/:ConflictId/",function(req,res){
   Conflict.update(
     { 
       title:req.body.title,
       description: req.body.description
     },
-    {returning:true,where:{ConflictId:req.params.ConflictId}}
+    {returning:true,where:{ConflictId:req.params.ConflictId,ProjectId:req.params.ProjectId}}
   ).then(result => {
     if(result==null){
      res.status(404).json("Conflict not found.")
@@ -73,15 +73,15 @@ conflicts.put("/update/:ConflictId/",function(req,res){
 })
 });
 //deleting conflict
-conflicts.put("/delete/:ConflictId/",function(req,res){
+conflicts.put("/delete/:ProjectId/:ConflictId/",function(req,res){
   Conflict.destroy(
- {where:{ConflictId:req.params.ConflictId}}
+ {where:{ConflictId:req.params.ConflictId,ProjectId:req.params.ProjectId}}
 ).then(result => {
  if(result==null){
   res.status(404).json("Conflict not found.")
  }
  else{
-  res.status(200).json("Conflic deleted.")
+  res.status(200).json("Conflict deleted.")
  }
 
 })
