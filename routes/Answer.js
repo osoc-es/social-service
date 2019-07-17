@@ -16,7 +16,7 @@ const fs = require('fs');
 const Json2csvParser = require('json2csv').Parser;
 
 answers.post('/submit/', (req, res) => { 
-    if(req.body.data!=null){
+    if(req.body.data!=null & req.body.data.length!=0){
         formData=req.body.data[0];
         //console.log(formData.Email+","+formData.QuestionId);
         UserAnswer.findOne({
@@ -116,17 +116,17 @@ answers.get('/:title/', (req, res) => {
         .then(report => {
           if (report) {
                   //--> Convert JSON to CSV data
-                const reportData = JSON.parse(JSON.stringify(report));
+            const reportData = JSON.parse(JSON.stringify(report));
 		        const csvFields = ["Id","Email","ProblemType","QuestionId","Question","Options","Answer","time"];
 		        const json2csvParser = new Json2csvParser({ csvFields });
                 const csv = json2csvParser.parse(reportData);
-                var currentDate=new Date();
+                //var currentDate=new Date();
                 //saving file
-                fs.writeFile("Report-"+currentDate+".csv", csv, function(err) {
+                fs.writeFile("Report-1.csv", csv, function(err) {
                     if (err) throw err;
                     console.log('file saved');
                 });
-                res.status(200).json("Check Report-"+currentDate+".csv file in root project folder. ")
+                res.status(200).json("Check Report-1.csv file in root project folder. ")
           } else {
             res.status(404).json('User have not filled anything yet..')
           }
