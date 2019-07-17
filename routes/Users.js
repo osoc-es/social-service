@@ -117,12 +117,11 @@ users.get('/profile/:Email/', (req, res) => {
 });
 
 //get list of users who have filled form of that problem 
-users.get('/:title', (req, res) => {
-  db.sequelize.query("SELECT DISTINCT users.FirstName,users.LastName,users.Email,Conflicts.title "
-  +"FROM Forms,Questions,users,UserAnswers,Conflicts WHERE Questions.QuestionId=UserAnswers.QuestionId "+
-  "AND UserAnswers.Email=users.Email AND Forms.FormId=Questions.FormId "+
-  "AND Conflicts.title IN(:title)",{
-  replacements: {title: req.params.title},
+users.get('/:ProblemType/', (req, res) => {
+  db.sequelize.query("SELECT DISTINCT users.FirstName,users.LastName,users.Email,users.Gender,Reports.ProblemType "
+  +"FROM Reports,users where Reports.Email=users.Email "+
+  "AND Reports.ProblemType IN(:ProblemType)",{
+  replacements: {ProblemType: req.params.ProblemType},
   type: db.sequelize.QueryTypes.SELECT
   })
   .then(function(result){

@@ -85,12 +85,9 @@ answers.post('/submit/', (req, res) => {
   
 });
 //get submitted answers
-answers.get('/:title/', (req, res) => {
+answers.get('/:title/:Email/', (req, res) => {
     Report.findAll({
-        where:{ProblemType:req.params.title},
-        //attributes: ["Id","Email","ProblemType","QuestionId","Question","Options","Answer","time",
-                       // [Sequelize.fn('count', sequelize.col('Email')), 'cnt']],
-        //group:["Email"]
+        where:{ProblemType:req.params.title,Email:req.params.Email}
       })
         .then(report => {
           if (report) {
