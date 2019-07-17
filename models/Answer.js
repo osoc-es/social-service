@@ -9,6 +9,12 @@ module.exports = db.sequelize.define(
       primaryKey: true,
       autoIncrement:true
     },
+    QuestionId: {
+      type: Sequelize.INTEGER
+    },
+    Email: {
+      type: Sequelize.STRING
+    },
     Answer: {
       type: Sequelize.STRING
     },
