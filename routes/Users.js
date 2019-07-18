@@ -103,7 +103,7 @@ users.get('/profile/:Email/', (req, res) => {
             LastName:result[0].user.LastName,
             Gender:result[0].user.Gender,
             Address:result[0].user.Address,
-            DOB:result[0].user.DOB
+            DOB:result[0].user.DOB  
           }
             res.status(200).json(data);
         })

@@ -15,7 +15,6 @@ answers.use(cors())
 const fs = require('fs');
 const Json2csvParser = require('json2csv').Parser;
 
-
 //submiting form with answers
 answers.post('/submit/', (req, res) => { 
     if(req.body.data!=null & req.body.data.length!=0){
@@ -96,6 +95,7 @@ answers.get('/:title/:Email/', (req, res) => {
             User.findOne({
               where:{Email:req.params.Email}
             }).then(function(user){
+              /*
               var fileName=user.FirstName+"-"+user.LastName+"-"+req.params.title+"-report.csv";
             //--> Convert JSON to CSV data
                 const reportData = JSON.parse(JSON.stringify(report));
@@ -106,8 +106,9 @@ answers.get('/:title/:Email/', (req, res) => {
                 fs.writeFile(fileName, csv, function(err) {
                     if (err) throw err;
                     console.log('file saved');
-                });
-                res.status(200).json("Check "+fileName+" file in root project folder. ")
+                });*/
+               //res.status(200).json("Check "+fileName+" file in root project folder.")
+                res.status(200).json(report)
             })
           } else {
             res.status(404).json('User have not filled anything yet..')
@@ -118,6 +119,5 @@ answers.get('/:title/:Email/', (req, res) => {
         })
  
 });
-
 
 module.exports = answers

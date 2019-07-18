@@ -51,27 +51,40 @@ conflicts.get('/:ProjectId/', (req, res) => {
         res.status(400).json('error: ' + err)
       })
   })
-//update conflict
+//updating conflict of project
 conflicts.put("/update/:ProjectId/:ConflictId/",function(req,res){
-  Conflict.update(
-    { 
-      title:req.body.title,
-      description: req.body.description
-    },
-    {returning:true,where:{ConflictId:req.params.ConflictId,ProjectId:req.params.ProjectId}}
-  ).then(result => {
-    if(result==null){
-     res.status(404).json("Conflict not found.")
+  Conflict.findOne({
+    where: {
+      title: req.body.title
     }
-    else{
-     res.status(200).json(result)
-    }
+  }).then(function(conflict){
+      if(!conflict){
+        Conflict.update(
+          { 
+            title:req.body.title,
+            description: req.body.description
+          },
+          {returning:true,where:{ConflictId:req.params.ConflictId,ProjectId:req.params.ProjectId}}
+        ).then(result => {
+          if(result==null){
+           res.status(404).json("Conflict not found.")
+          }
+          else{
+           res.status(200).json("Conflict updated sucessfuly..")
+          }
+        
+       })
+      .catch(err=>{
+        res.status(400).json("error: "+err)
+      })
+
+      }else{
+        res.send(409).json("CONFLICT with this title already exisit..")
+      }
+  });
   
- })
-.catch(err=>{
-  res.status(400).json("error: "+err)
-})
 });
+
 //deleting conflict
 conflicts.put("/delete/:ProjectId/:ConflictId/",function(req,res){
   Conflict.destroy(
@@ -90,4 +103,5 @@ conflicts.put("/delete/:ProjectId/:ConflictId/",function(req,res){
    res.status(400).json("error: "+err)
    })
 });
+
 module.exports = conflicts

@@ -132,6 +132,7 @@ function validateQuestion(req){
             return "True";
         }
     }
+    
     Question.hasMany(Option,{foreignKey: 'QuestionId'});
     Option.belongsTo(Question,{foreignKey: 'QuestionId'});
     module.exports = questions
