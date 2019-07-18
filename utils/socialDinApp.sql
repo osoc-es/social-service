@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 16, 2019 at 01:46 PM
+-- Generation Time: Jul 18, 2019 at 10:59 AM
 -- Server version: 8.0.13-4
 -- PHP Version: 7.2.19-0ubuntu0.18.04.1
 
@@ -30,9 +30,26 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `Answers` (
   `AnswerId` int(11) NOT NULL,
+  `QuestionId` int(11) NOT NULL,
+  `Email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `Answer` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
   `AnswerType` varchar(50) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `Answers`
+--
+
+INSERT INTO `Answers` (`AnswerId`, `QuestionId`, `Email`, `Answer`, `AnswerType`) VALUES
+(13, 20, 'pochuelo15@gmail.com', 'answer', '0'),
+(14, 21, 'pochuelo15@gmail.com', 'Triste, Indiferente', '1'),
+(15, 22, 'pochuelo15@gmail.com', 'Sí', '3'),
+(16, 23, 'pochuelo15@gmail.com', 'Opción 2', '2'),
+(17, 24, 'pochuelo15@gmail.com', '1', '4'),
+(18, 25, 'socialacc@gmail.com', 'hey', '0'),
+(19, 26, 'socialacc@gmail.com', '4', '1'),
+(20, 26, 'pochuelo15@gmail.com', '1, 4, 6', '1'),
+(21, 25, 'pochuelo15@gmail.com', 'hey', '0');
 
 -- --------------------------------------------------------
 
@@ -52,8 +69,8 @@ CREATE TABLE `Conflicts` (
 --
 
 INSERT INTO `Conflicts` (`ConflictId`, `ProjectId`, `title`, `description`) VALUES
-(22, 9, 'Bullying', 'Conflict description'),
-(23, 9, 'Conflicto2', 'Descripción que se muestra por fuera');
+(24, 11, 'Bullying', 'Una descripción del conflicto bullying'),
+(25, 14, 'nombre', 'descripción');
 
 -- --------------------------------------------------------
 
@@ -84,8 +101,8 @@ CREATE TABLE `Forms` (
 --
 
 INSERT INTO `Forms` (`FormId`, `ConflictId`, `description`) VALUES
-(6, 22, 'form description'),
-(7, 23, 'Descripción que se muestra por dentro');
+(8, 24, 'Bullying'),
+(9, 25, 'título del formulario');
 
 -- --------------------------------------------------------
 
@@ -104,12 +121,28 @@ CREATE TABLE `Options` (
 --
 
 INSERT INTO `Options` (`OptionId`, `QuestionId`, `OptionDescription`) VALUES
-(1, 7, 'some text'),
-(2, 7, 'another option'),
-(3, 8, 'some text'),
-(4, 8, 'another option'),
-(5, 9, 'first textbox'),
-(6, 9, 'second textbox');
+(31, 20, 'Tu respuesta:'),
+(32, 21, 'Cansado'),
+(33, 21, 'Triste'),
+(34, 21, 'Indiferente'),
+(35, 21, 'Enfadado'),
+(36, 22, 'Sí'),
+(37, 22, 'No'),
+(38, 23, 'Opción 1'),
+(39, 23, 'Opción 2'),
+(40, 23, 'Opción 3 '),
+(41, 24, '1'),
+(42, 24, '2'),
+(43, 24, '3'),
+(44, 25, 'Hola'),
+(45, 26, '1'),
+(46, 26, '2'),
+(47, 26, '3'),
+(48, 26, '4'),
+(49, 26, '6'),
+(50, 26, '5'),
+(51, 26, '7'),
+(52, 26, '8');
 
 -- --------------------------------------------------------
 
@@ -162,8 +195,10 @@ CREATE TABLE `Projects` (
 --
 
 INSERT INTO `Projects` (`ProjectId`, `OrgId`, `name`, `Description`) VALUES
-(9, 1, 'Familia', 'Descripción del proyecto de familia'),
-(10, 1, 'Proyecto2', 'Descripción del segundo proyecto');
+(11, 1, 'Familia', 'Descripción que no voy a pensar'),
+(12, 1, 'Proyecto 2', 'Descripción para el segundo proyecto'),
+(13, 1, 'Proyecto 3', 'Descripción para el tercer proyecto'),
+(14, 1, 'Proyecto 4', 'descripción del proyecto');
 
 -- --------------------------------------------------------
 
@@ -185,9 +220,13 @@ CREATE TABLE `Questions` (
 --
 
 INSERT INTO `Questions` (`QuestionId`, `FormId`, `QustionType`, `Question`, `description`, `isMandatory`) VALUES
-(7, 6, '1', 'A question with options', 'some description for the question', 1),
-(8, 6, '2', 'Another question', 'some description for the second question', 1),
-(9, 6, '0', 'Another question', 'some description for the second question', 1);
+(20, 8, '0', 'Breve descripción de la consulta', 'Algún texto extra informativo', 1),
+(21, 8, '1', 'Cómo te sientes al respecto?', 'Indica tus sentimientos sobre el conflicto', 0),
+(22, 8, '3', 'Otra pregunta', 'Esta es booleana', 0),
+(23, 8, '2', 'Otra pregunta', 'Esta es de botones de radio', 1),
+(24, 8, '4', 'Una última pregunta', 'esta es de rango', 1),
+(25, 9, '0', 'Hola soy una pregunta', 'Hola soy una descripción', 1),
+(26, 9, '1', 'Segunda pregunta', 'pues eso', 1);
 
 -- --------------------------------------------------------
 
@@ -201,10 +240,25 @@ CREATE TABLE `Reports` (
   `ProblemType` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `QuestionId` varchar(1000) COLLATE utf8_unicode_ci NOT NULL,
   `Question` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
-  `Options` int(11) NOT NULL,
-  `Answer` int(11) NOT NULL,
+  `Options` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
+  `Answer` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
   `time` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `Reports`
+--
+
+INSERT INTO `Reports` (`Id`, `Email`, `ProblemType`, `QuestionId`, `Question`, `Options`, `Answer`, `time`) VALUES
+(11, 'pochuelo15@gmail.com', 'Bullying', '20', 'Breve descripción de la consulta', 'Tu respuesta:', 'answer', '2019-07-17'),
+(12, 'pochuelo15@gmail.com', 'Bullying', '21', 'Cómo te sientes al respecto?', 'Cansado, Triste, Indiferente, Enfadado', 'Triste, Indiferente', '2019-07-17'),
+(13, 'pochuelo15@gmail.com', 'Bullying', '22', 'Otra pregunta', 'Sí, No', 'Sí', '2019-07-17'),
+(14, 'pochuelo15@gmail.com', 'Bullying', '24', 'Una última pregunta', '1, 2, 3', '1', '2019-07-17'),
+(15, 'pochuelo15@gmail.com', 'Bullying', '23', 'Otra pregunta', 'Opción 1, Opción 2, Opción 3 ', 'Opción 2', '2019-07-17'),
+(16, 'socialacc@gmail.com', 'nombre', '25', 'Hola soy una pregunta', 'Hola', 'hey', '2019-07-17'),
+(17, 'socialacc@gmail.com', 'nombre', '26', 'Segunda pregunta', '1, 2, 3, 4, 6, 5, 7, 8', '4', '2019-07-17'),
+(18, 'pochuelo15@gmail.com', 'nombre', '25', 'Hola soy una pregunta', 'Hola', 'hey', '2019-07-17'),
+(19, 'pochuelo15@gmail.com', 'nombre', '26', 'Segunda pregunta', '1, 2, 3, 4, 6, 5, 7, 8', '1, 4, 6', '2019-07-17');
 
 -- --------------------------------------------------------
 
@@ -240,11 +294,6 @@ CREATE TABLE `users` (
 --
 -- Dumping data for table `users`
 --
-
-INSERT INTO `users` (`Email`, `id`, `OrgId`, `Password`, `FirstName`, `LastName`, `ContactNumber`, `Address`, `Gender`, `DOB`) VALUES
-('anything@gmail.com', 41, 1, '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'Kirn', 'Manzoor', '34', 'your addresss', 'FeMale', '1994-04-07'),
-('pochuelo15@gmail.com', 43, 1, '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'Carlos', 'Pozuelo', '333', 'your addresss', 'Hombre', '1999-01-01');
-
 -- --------------------------------------------------------
 
 --
@@ -260,10 +309,6 @@ CREATE TABLE `usertypes` (
 -- Dumping data for table `usertypes`
 --
 
-INSERT INTO `usertypes` (`id`, `title`) VALUES
-(41, 'end_user'),
-(42, 'end_user'),
-(43, 'admin');
 
 --
 -- Indexes for dumped tables
@@ -340,7 +385,8 @@ ALTER TABLE `Reports`
 -- Indexes for table `UserAnswers`
 --
 ALTER TABLE `UserAnswers`
-  ADD PRIMARY KEY (`Email`,`QuestionId`);
+  ADD PRIMARY KEY (`Email`,`QuestionId`),
+  ADD KEY `FK_AnswerId` (`AnswerId`);
 
 --
 -- Indexes for table `users`
@@ -363,13 +409,13 @@ ALTER TABLE `usertypes`
 -- AUTO_INCREMENT for table `Answers`
 --
 ALTER TABLE `Answers`
-  MODIFY `AnswerId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `AnswerId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `Conflicts`
 --
 ALTER TABLE `Conflicts`
-  MODIFY `ConflictId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `ConflictId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `FeedBacks`
@@ -381,13 +427,13 @@ ALTER TABLE `FeedBacks`
 -- AUTO_INCREMENT for table `Forms`
 --
 ALTER TABLE `Forms`
-  MODIFY `FormId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `FormId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `Options`
 --
 ALTER TABLE `Options`
-  MODIFY `OptionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `OptionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `Organizations`
@@ -399,25 +445,25 @@ ALTER TABLE `Organizations`
 -- AUTO_INCREMENT for table `Projects`
 --
 ALTER TABLE `Projects`
-  MODIFY `ProjectId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `ProjectId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `Questions`
 --
 ALTER TABLE `Questions`
-  MODIFY `QuestionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `QuestionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `Reports`
 --
 ALTER TABLE `Reports`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `usertypes`
 --
 ALTER TABLE `usertypes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- Constraints for dumped tables
@@ -460,6 +506,12 @@ ALTER TABLE `Projects`
 --
 ALTER TABLE `Questions`
   ADD CONSTRAINT `FK_FormQuestions` FOREIGN KEY (`FormId`) REFERENCES `Forms` (`FormId`);
+
+--
+-- Constraints for table `UserAnswers`
+--
+ALTER TABLE `UserAnswers`
+  ADD CONSTRAINT `FK_AnswerId` FOREIGN KEY (`AnswerId`) REFERENCES `Answers` (`answerid`);
 
 --
 -- Constraints for table `users`
