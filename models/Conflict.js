@@ -9,9 +9,6 @@ module.exports = db.sequelize.define(
       primaryKey: true,
       autoIncrement:true
     },
-    ProjectId:{
-      type: Sequelize.INTEGER,
-    },
     title: {
       type: Sequelize.STRING
     },

@@ -5,7 +5,7 @@ const Conflict = require('../models/Conflict')
 conflicts.use(cors())
 
 //creating new conflict
-conflicts.post('/add/:ProjectId/', (req, res) => {
+conflicts.post('/add/', (req, res) => {
     if(req.body.title!=null && req.body.title!=""){
         Conflict.findOne({
             where: {
@@ -15,12 +15,11 @@ conflicts.post('/add/:ProjectId/', (req, res) => {
             if (!conlict) {
                 Conflict.create(
                   {
-                  ProjectId:req.params.ProjectId,
                   title:req.body.title,
                   description: req.body.description
                   }
                 ).then(function(conflict){
-                  res.status(200).json(conflict);
+                  res.status(200).json("Conflict added sucessfully.");
                 })
                 
             }else{
@@ -36,9 +35,8 @@ conflicts.post('/add/:ProjectId/', (req, res) => {
 
 });
 //get conflicts
-conflicts.get('/:ProjectId/', (req, res) => {
+conflicts.get('/', (req, res) => {
     Conflict.findAll({
-      where:{ProjectId:req.params.ProjectId}
     })
       .then(conflict => {
         if (conflict) {
@@ -52,7 +50,7 @@ conflicts.get('/:ProjectId/', (req, res) => {
       })
   })
 //updating conflict of project
-conflicts.put("/update/:ProjectId/:ConflictId/",function(req,res){
+conflicts.put("/update/:ConflictId/",function(req,res){
   Conflict.findOne({
     where: {
       title: req.body.title
@@ -64,7 +62,7 @@ conflicts.put("/update/:ProjectId/:ConflictId/",function(req,res){
             title:req.body.title,
             description: req.body.description
           },
-          {returning:true,where:{ConflictId:req.params.ConflictId,ProjectId:req.params.ProjectId}}
+          {returning:true,where:{ConflictId:req.params.ConflictId}}
         ).then(result => {
           if(result==null){
            res.status(404).json("Conflict not found.")
@@ -86,10 +84,10 @@ conflicts.put("/update/:ProjectId/:ConflictId/",function(req,res){
 });
 
 //deleting conflict
-conflicts.put("/delete/:ProjectId/:ConflictId/",function(req,res){
+conflicts.put("/delete/:ConflictId/",function(req,res){
   Conflict.destroy(
     {
-        where:{ConflictId:req.params.ConflictId,ProjectId:req.params.ProjectId}
+        where:{ConflictId:req.params.ConflictId}
     }
     ).then(result => {
         if(result==null){

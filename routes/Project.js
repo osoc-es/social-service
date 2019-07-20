@@ -2,6 +2,7 @@ const express = require('express')
 const projects = express.Router()
 const cors = require('cors')
 const Project = require('../models/Project') 
+const ProjectConflict = require('../models/ProjectConflict') 
 projects.use(cors())
 
 //creating new project for organization
@@ -31,6 +32,26 @@ projects.post('/add/:OrgId/', (req, res) => {
     }else{
         res.status(400).json("Name can not be empty.");
     }
+
+});
+//add Conflict to project
+projects.post('/add/:ProjectId/ConflictId/', (req, res) => {
+  ProjectConflict.create(
+                {
+                  ProjectId:req.params.ProjectId,
+                  ConflictId:req.params.ConflictId
+                }
+              ).then(function(pconflict){
+                if(pconflict){
+                  res.status(200).json("Conflict added to project..")
+                }
+                else{
+                  res.status(400).json("Something went wrong try again..")
+                }
+              })
+          . catch(err => {
+          res.status(409).json('Foreign Key Conflict: ' + err)
+        })
 
 });
 //get projects of given organization Id
