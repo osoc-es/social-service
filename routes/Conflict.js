@@ -19,7 +19,7 @@ conflicts.post('/add/', (req, res) => {
                   description: req.body.description
                   }
                 ).then(function(conflict){
-                  res.status(200).json("Conflict added sucessfully.");
+                  res.status(200).json(conflict);
                 })
                 
             }else{
