@@ -72,6 +72,26 @@ projects.get('/:OrgId/', (req, res) => {
         res.status(400).json('error: ' + err)
       })
   })
+  //get conflicts of specific project
+  projects.get('/conflicts/:OrgId/:ProjectId/', (req, res) => {
+    db.sequelize.query("SELECT Projects.ProjectId,Conflicts.ConflictId,Projects.Description,Projects.name,"+
+  "Projects.Description,Conflicts.title,Conflicts.description FROM Projects,Conflicts,ProjectConflicts where "+
+  "ProjectConflicts.ProjectId=Projects.ProjectId AND Conflicts.ConflictId=ProjectConflicts.ConflictId "+
+  "AND Projects.OrgId IN(:OrgId) AND ProjectConflicts.ProjectId IN(:ProjectId)",
+  { replacements: { OrgId: req.params.OrgId,ProjectId:req.params.ProjectId}, 
+  type: sequelize.QueryTypes.SELECT }
+    )
+      .then(project => {
+        if (project) {
+          res.status(200).json(project)
+        } else {
+          res.status(404).json('No project found,you can add them on projects/add..')
+        }
+      })
+      .catch(err => {
+        res.status(400).json('error: ' + err)
+      })
+  })
 
 //gets projects with conflicts
 projects.get("/projectconflicts/:OrgId/",function(req,res){
