@@ -4,6 +4,8 @@ const cors = require('cors')
 const Project = require('../models/Project') 
 const ProjectConflict = require('../models/ProjectConflict') 
 projects.use(cors())
+const sequelize = require('sequelize')
+const db = require('../database/db.js')
 
 //creating new project for organization
 projects.post('/add/:OrgId/', (req, res) => {
@@ -35,7 +37,7 @@ projects.post('/add/:OrgId/', (req, res) => {
 
 });
 //add Conflict to project
-projects.post('/add/:ProjectId/ConflictId/', (req, res) => {
+projects.post('/add/:ProjectId/:ConflictId/', (req, res) => {
   ProjectConflict.create(
                 {
                   ProjectId:req.params.ProjectId,
@@ -71,6 +73,23 @@ projects.get('/:OrgId/', (req, res) => {
       })
   })
 
+//gets projects with conflicts
+projects.get("/projectconflicts/:OrgId/",function(req,res){
+  db.sequelize.query("SELECT Projects.ProjectId,Conflicts.ConflictId,Projects.Description,Projects.name,"+
+  "Projects.Description,Conflicts.title,Conflicts.description FROM Projects,Conflicts,ProjectConflicts where "+
+  "ProjectConflicts.ProjectId=Projects.ProjectId AND Conflicts.ConflictId=ProjectConflicts.ConflictId "+
+  "AND Projects.OrgId IN(:OrgId)",
+  { replacements: { OrgId: req.params.OrgId}, 
+  type: sequelize.QueryTypes.SELECT }
+  ).then(function(result){
+     if(result){
+       res.status(200).json(result)
+     }else{
+       res.status(404).json("no record found..")
+     }
+  })
+
+})
 
 //updating project of organization
 projects.put("/update/:OrgId/:ProjectId/",function(req,res){
