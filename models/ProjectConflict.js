@@ -5,10 +5,12 @@ module.exports = db.sequelize.define(
   'ProjectConflict',
   {
     ProjectId: {
-      type: Sequelize.INTEGER
+      type: Sequelize.INTEGER,
+      primaryKey: true
     },
     ConflictId: {
-      type: Sequelize.INTEGER
+      type: Sequelize.INTEGER,
+      primaryKey: true
     } 
   },
   {
