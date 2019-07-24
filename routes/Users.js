@@ -99,6 +99,7 @@ users.get('/profile/:Email/', (req, res) => {
           var data={
             title:result[0].title,
             Email:result[0].user.Email,
+            OrgId:result[0].user.OrgId,
             FirstName:result[0].user.FirstName,
             LastName:result[0].user.LastName,
             Gender:result[0].user.Gender,
