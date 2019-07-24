@@ -27,7 +27,7 @@ User.findOne({
       const userData = {
         Email: req.body.Email,
         id: result.id,
-        OrgId:1,
+        OrgId:req.body.OrgId,
         Password: hashPassword,
         FirstName: req.body.FirstName,
         LastName: req.body.LastName,
