@@ -60,7 +60,7 @@ forms.put("/update/:FormId/",function(req,res){
 })
 });
 //deleting conflict
-forms.put("/delete/:FormId",function(req,res){
+forms.delete("/delete/:FormId",function(req,res){
   Form.destroy(
  {where:{FormId:req.params.FormId}}
 ).then(result => {

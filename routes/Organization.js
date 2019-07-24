@@ -5,7 +5,7 @@ const Organization = require('../models/Organization')
 organizations.use(cors())
 
 //creating new organization
-organizations.post('/add', (req, res) => {
+organizations.post('/add/', (req, res) => {
     if(req.body.Name!=null && req.body.Name!=""){
         Organization.findOne({
             where: {

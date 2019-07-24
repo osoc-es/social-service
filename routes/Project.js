@@ -145,7 +145,7 @@ projects.put("/update/:OrgId/:ProjectId/",function(req,res){
   
 });
 //deleting project
-projects.put("/delete/:OrgId/:ConflictId/",function(req,res){
+projects.delete("/delete/:OrgId/:ConflictId/",function(req,res){
   Project.destroy(
     {
         where:{OrgId:req.params.OrgId,ProjectId:req.params.ProjectId}

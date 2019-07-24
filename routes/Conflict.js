@@ -84,7 +84,7 @@ conflicts.put("/update/:ConflictId/",function(req,res){
 });
 
 //deleting conflict
-conflicts.put("/delete/:ConflictId/",function(req,res){
+conflicts.delete("/delete/:ConflictId/",function(req,res){
   Conflict.destroy(
     {
         where:{ConflictId:req.params.ConflictId}

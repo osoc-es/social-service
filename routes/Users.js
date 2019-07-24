@@ -153,7 +153,7 @@ users.put("/profile/:Email/",function(req,res){
    })
 });
 //removing user
-users.put("/delete/:Email/",function(req,res){
+users.delete("/delete/:Email/",function(req,res){
   User.destroy(
     {where:{Email:req.params.Email}}
   ).then(result => {
