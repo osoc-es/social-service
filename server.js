@@ -21,7 +21,6 @@ router.use(function(req, res, next) {
   next();
 });
 
-// this will only be invoked if the path ends in /users
 router.use('/users', Users)
 router.use("/conflicts",Conflicts)
 router.use("/forms",Forms)
@@ -34,7 +33,6 @@ router.use("/projects",Projects)
 //router.use(function(req, res, next) {
 //  res.send('Hello World');
 //});
-
 
 app.use(bodyParser.json())
 app.use(cors())
