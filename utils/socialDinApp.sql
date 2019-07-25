@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 18, 2019 at 10:59 AM
+-- Generation Time: Jul 25, 2019 at 09:39 AM
 -- Server version: 8.0.13-4
 -- PHP Version: 7.2.19-0ubuntu0.18.04.1
 
@@ -36,47 +36,14 @@ CREATE TABLE `Answers` (
   `AnswerType` varchar(50) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Dumping data for table `Answers`
---
 
-INSERT INTO `Answers` (`AnswerId`, `QuestionId`, `Email`, `Answer`, `AnswerType`) VALUES
-(13, 20, 'pochuelo15@gmail.com', 'answer', '0'),
-(14, 21, 'pochuelo15@gmail.com', 'Triste, Indiferente', '1'),
-(15, 22, 'pochuelo15@gmail.com', 'Sí', '3'),
-(16, 23, 'pochuelo15@gmail.com', 'Opción 2', '2'),
-(17, 24, 'pochuelo15@gmail.com', '1', '4'),
-(18, 25, 'socialacc@gmail.com', 'hey', '0'),
-(19, 26, 'socialacc@gmail.com', '4', '1'),
-(20, 26, 'pochuelo15@gmail.com', '1, 4, 6', '1'),
-(21, 25, 'pochuelo15@gmail.com', 'hey', '0');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `Conflicts`
---
 
 CREATE TABLE `Conflicts` (
   `ConflictId` int(11) NOT NULL,
-  `ProjectId` int(11) NOT NULL,
   `title` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `description` varchar(200) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Some description'
+  `description` varchar(300) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Dumping data for table `Conflicts`
---
-
-INSERT INTO `Conflicts` (`ConflictId`, `ProjectId`, `title`, `description`) VALUES
-(24, 11, 'Bullying', 'Una descripción del conflicto bullying'),
-(25, 14, 'nombre', 'descripción');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `FeedBacks`
---
 
 CREATE TABLE `FeedBacks` (
   `FeedbackId` int(11) NOT NULL,
@@ -96,13 +63,6 @@ CREATE TABLE `Forms` (
   `description` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Description of form'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Dumping data for table `Forms`
---
-
-INSERT INTO `Forms` (`FormId`, `ConflictId`, `description`) VALUES
-(8, 24, 'Bullying'),
-(9, 25, 'título del formulario');
 
 -- --------------------------------------------------------
 
@@ -116,35 +76,6 @@ CREATE TABLE `Options` (
   `OptionDescription` varchar(200) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Dumping data for table `Options`
---
-
-INSERT INTO `Options` (`OptionId`, `QuestionId`, `OptionDescription`) VALUES
-(31, 20, 'Tu respuesta:'),
-(32, 21, 'Cansado'),
-(33, 21, 'Triste'),
-(34, 21, 'Indiferente'),
-(35, 21, 'Enfadado'),
-(36, 22, 'Sí'),
-(37, 22, 'No'),
-(38, 23, 'Opción 1'),
-(39, 23, 'Opción 2'),
-(40, 23, 'Opción 3 '),
-(41, 24, '1'),
-(42, 24, '2'),
-(43, 24, '3'),
-(44, 25, 'Hola'),
-(45, 26, '1'),
-(46, 26, '2'),
-(47, 26, '3'),
-(48, 26, '4'),
-(49, 26, '6'),
-(50, 26, '5'),
-(51, 26, '7'),
-(52, 26, '8');
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `Organizations`
@@ -162,11 +93,6 @@ CREATE TABLE `Organizations` (
 -- Dumping data for table `Organizations`
 --
 
-INSERT INTO `Organizations` (`OrgId`, `Name`, `LogoUrl`, `OrgUrl`, `Description`) VALUES
-(1, 'Madrid', 'Organization Logo URL', 'Organization URL', 'some description');
-
--- --------------------------------------------------------
-
 --
 -- Table structure for table `ProblemFeedbacks`
 --
@@ -180,6 +106,16 @@ CREATE TABLE `ProblemFeedbacks` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ProjectConflicts`
+--
+
+CREATE TABLE `ProjectConflicts` (
+  `ProjectId` int(11) NOT NULL,
+  `ConflictId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+--
 -- Table structure for table `Projects`
 --
 
@@ -190,19 +126,6 @@ CREATE TABLE `Projects` (
   `Description` varchar(300) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'project description'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Dumping data for table `Projects`
---
-
-INSERT INTO `Projects` (`ProjectId`, `OrgId`, `name`, `Description`) VALUES
-(11, 1, 'Familia', 'Descripción que no voy a pensar'),
-(12, 1, 'Proyecto 2', 'Descripción para el segundo proyecto'),
-(13, 1, 'Proyecto 3', 'Descripción para el tercer proyecto'),
-(14, 1, 'Proyecto 4', 'descripción del proyecto');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `Questions`
 --
 
@@ -215,20 +138,7 @@ CREATE TABLE `Questions` (
   `isMandatory` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Dumping data for table `Questions`
---
 
-INSERT INTO `Questions` (`QuestionId`, `FormId`, `QustionType`, `Question`, `description`, `isMandatory`) VALUES
-(20, 8, '0', 'Breve descripción de la consulta', 'Algún texto extra informativo', 1),
-(21, 8, '1', 'Cómo te sientes al respecto?', 'Indica tus sentimientos sobre el conflicto', 0),
-(22, 8, '3', 'Otra pregunta', 'Esta es booleana', 0),
-(23, 8, '2', 'Otra pregunta', 'Esta es de botones de radio', 1),
-(24, 8, '4', 'Una última pregunta', 'esta es de rango', 1),
-(25, 9, '0', 'Hola soy una pregunta', 'Hola soy una descripción', 1),
-(26, 9, '1', 'Segunda pregunta', 'pues eso', 1);
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `Reports`
@@ -244,23 +154,6 @@ CREATE TABLE `Reports` (
   `Answer` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
   `time` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `Reports`
---
-
-INSERT INTO `Reports` (`Id`, `Email`, `ProblemType`, `QuestionId`, `Question`, `Options`, `Answer`, `time`) VALUES
-(11, 'pochuelo15@gmail.com', 'Bullying', '20', 'Breve descripción de la consulta', 'Tu respuesta:', 'answer', '2019-07-17'),
-(12, 'pochuelo15@gmail.com', 'Bullying', '21', 'Cómo te sientes al respecto?', 'Cansado, Triste, Indiferente, Enfadado', 'Triste, Indiferente', '2019-07-17'),
-(13, 'pochuelo15@gmail.com', 'Bullying', '22', 'Otra pregunta', 'Sí, No', 'Sí', '2019-07-17'),
-(14, 'pochuelo15@gmail.com', 'Bullying', '24', 'Una última pregunta', '1, 2, 3', '1', '2019-07-17'),
-(15, 'pochuelo15@gmail.com', 'Bullying', '23', 'Otra pregunta', 'Opción 1, Opción 2, Opción 3 ', 'Opción 2', '2019-07-17'),
-(16, 'socialacc@gmail.com', 'nombre', '25', 'Hola soy una pregunta', 'Hola', 'hey', '2019-07-17'),
-(17, 'socialacc@gmail.com', 'nombre', '26', 'Segunda pregunta', '1, 2, 3, 4, 6, 5, 7, 8', '4', '2019-07-17'),
-(18, 'pochuelo15@gmail.com', 'nombre', '25', 'Hola soy una pregunta', 'Hola', 'hey', '2019-07-17'),
-(19, 'pochuelo15@gmail.com', 'nombre', '26', 'Segunda pregunta', '1, 2, 3, 4, 6, 5, 7, 8', '1, 4, 6', '2019-07-17');
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `UserAnswers`
@@ -291,10 +184,6 @@ CREATE TABLE `users` (
   `DOB` date NOT NULL DEFAULT '1999-01-01'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Dumping data for table `users`
---
--- --------------------------------------------------------
 
 --
 -- Table structure for table `usertypes`
@@ -305,14 +194,6 @@ CREATE TABLE `usertypes` (
   `title` varchar(50) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Dumping data for table `usertypes`
---
-
-
---
--- Indexes for dumped tables
---
 
 --
 -- Indexes for table `Answers`
@@ -324,8 +205,7 @@ ALTER TABLE `Answers`
 -- Indexes for table `Conflicts`
 --
 ALTER TABLE `Conflicts`
-  ADD PRIMARY KEY (`ConflictId`),
-  ADD KEY `FK_ProjectConflicts` (`ProjectId`);
+  ADD PRIMARY KEY (`ConflictId`);
 
 --
 -- Indexes for table `FeedBacks`
@@ -362,6 +242,13 @@ ALTER TABLE `ProblemFeedbacks`
   ADD KEY `FK_FConflict` (`ConflictId`);
 
 --
+-- Indexes for table `ProjectConflicts`
+--
+ALTER TABLE `ProjectConflicts`
+  ADD PRIMARY KEY (`ProjectId`,`ConflictId`),
+  ADD KEY `FK_ConflictId` (`ConflictId`);
+
+--
 -- Indexes for table `Projects`
 --
 ALTER TABLE `Projects`
@@ -385,7 +272,6 @@ ALTER TABLE `Reports`
 -- Indexes for table `UserAnswers`
 --
 ALTER TABLE `UserAnswers`
-  ADD PRIMARY KEY (`Email`,`QuestionId`),
   ADD KEY `FK_AnswerId` (`AnswerId`);
 
 --
@@ -409,13 +295,13 @@ ALTER TABLE `usertypes`
 -- AUTO_INCREMENT for table `Answers`
 --
 ALTER TABLE `Answers`
-  MODIFY `AnswerId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `AnswerId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `Conflicts`
 --
 ALTER TABLE `Conflicts`
-  MODIFY `ConflictId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `ConflictId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `FeedBacks`
@@ -427,53 +313,47 @@ ALTER TABLE `FeedBacks`
 -- AUTO_INCREMENT for table `Forms`
 --
 ALTER TABLE `Forms`
-  MODIFY `FormId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `FormId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `Options`
 --
 ALTER TABLE `Options`
-  MODIFY `OptionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `OptionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
 
 --
 -- AUTO_INCREMENT for table `Organizations`
 --
 ALTER TABLE `Organizations`
-  MODIFY `OrgId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `OrgId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `Projects`
 --
 ALTER TABLE `Projects`
-  MODIFY `ProjectId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `ProjectId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `Questions`
 --
 ALTER TABLE `Questions`
-  MODIFY `QuestionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `QuestionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `Reports`
 --
 ALTER TABLE `Reports`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `usertypes`
 --
 ALTER TABLE `usertypes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `Conflicts`
---
-ALTER TABLE `Conflicts`
-  ADD CONSTRAINT `FK_ProjectConflicts` FOREIGN KEY (`ProjectId`) REFERENCES `Projects` (`projectid`);
 
 --
 -- Constraints for table `Forms`
@@ -494,6 +374,13 @@ ALTER TABLE `ProblemFeedbacks`
   ADD CONSTRAINT `FK_FConflict` FOREIGN KEY (`ConflictId`) REFERENCES `Conflicts` (`conflictid`),
   ADD CONSTRAINT `FK_FUser` FOREIGN KEY (`Email`) REFERENCES `users` (`email`),
   ADD CONSTRAINT `FK_Feedback` FOREIGN KEY (`FeedbackId`) REFERENCES `FeedBacks` (`feedbackid`);
+
+--
+-- Constraints for table `ProjectConflicts`
+--
+ALTER TABLE `ProjectConflicts`
+  ADD CONSTRAINT `FK_ConflictId` FOREIGN KEY (`ConflictId`) REFERENCES `Conflicts` (`conflictid`),
+  ADD CONSTRAINT `FK_ProjectId` FOREIGN KEY (`ProjectId`) REFERENCES `Projects` (`projectid`);
 
 --
 -- Constraints for table `Projects`
